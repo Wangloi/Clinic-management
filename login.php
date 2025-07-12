@@ -29,8 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: welcome.php");
         exit();
     } else {
-        $error = "Invalid credentials";
+        $_SESSION['login_error'] = "Invalid username or password";
         sleep(1); // Throttle brute force attempts
+        header("Location: index.php"); // Redirect back to login page
+        exit();
     }
+}
+
+// Check for error message from failed login
+if (isset($_SESSION['login_error'])) {
+    $error = $_SESSION['login_error'];
+    unset($_SESSION['login_error']); // Clear the error after displaying
 }
 ?>
