@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps:wght@400;700&family=Onest:wght@100..900&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #02026f;
+    height: 100%;
+    font-family: "Onest", sans-serif;
+}
+
+.login {
+    position: relative; /* Needed for absolute positioning of overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: url('images/schoolBG.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Overlay styles */
+.login::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0015D0;
+    opacity: 50%; 
+    z-index: 0; 
+}
+
+
+
+.layer-1 {
+    width: 455px;
+    height: 565px;
+    background-color: white;
+    border-radius: 10px 0 0 10px;
+    padding-top: 20px;
+    z-index: 1;
+}
+
+.black-BG {
+    margin-left: 10px;
+    width: 100%;
+    height: 550px; 
+    background-color: #323236;
+    border-radius: 10px 0 0 10px;
+}
+
+.layer-2 {
+    width: 455px;
+    height: 565px;
+    background-color: white;
+    border-radius: 0 10px 10px 0;
+    padding-top: 20px;
+    z-index: 1;
+}
+
+.Logos {
+    display: flex;
+    padding: 30px 50px 10px 50px;
+    margin-bottom: 50px;
+}
+
+
+.SRCB-Logo img,
+.Example-Logo img {
+    width: 50px;
+}
+
+.SRCB-Logo {
+    padding-right: 10px;
+    border-right: 2px solid white;
+}
+
+.Example-Logo {
+    padding-left: 10px;
+}
+
+.Text-1 {
+    padding-left: 50px;
+    font-size: 70px;
+    color: white;
+    font-family: "Oleo Script Swash Caps", cursive;
+}
+
+.Text-2 {
+    padding-left: 50px;
+    font-size: 50px;
+    color: white;
+    font-weight: bold;
+}
+
+.mess-1 {
+    padding-left: 50px;
+    font-size: 20px;
+    color: white;
+}
+
+.mess-2 {
+    padding: 30px 50px 10px 50px;
+    margin-bottom: 45px;
+}
+
+.Text-3 {
+    font-size: 25px;
+    color: #00095E;
+    font-weight: 500;
+}
+
+.Text-4 {
+    font-size: 15px;
+    color: #00095E;
+    font-weight: 400;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 350px;
+    padding: 20px;
+    margin-top: 90px;
+    padding-left: 47px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #00095E;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 18px;
+}
+
+.login-button:hover {
+    background-color: #3a7bc8;
+}
+
+.logout-button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #3a7bc8;
+}
