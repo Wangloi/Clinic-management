@@ -5,3 +5,18 @@ body{
     height: 100%;
     font-family: "Onest", sans-serif;
 }
+
+.logout-button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #3a7bc8;
+}
