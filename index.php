@@ -6,10 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login | Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="style.css">
-        <!-- Pass PHP error to JavaScript -->
         <script>
             <?php if (!empty($error)): ?>
-                window.loginError = <?php echo json_encode($error); ?>;
+            window.loginError = <?php echo json_encode($error); ?>;
             <?php endif; ?>
         </script>
     </head>
@@ -43,8 +42,7 @@
                     <div class="Text-4">Ready to help students today? Log in!</div>
                 </div>
 
-                <div id="error-message" style="display: none;"><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></div>
-
+                <div id="admin-error-message" style="display: none;"><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></div>
                 <form action="login.php" method="POST" class="login-form" id="loginForm">
                     <div class="error-message" id="errorContainer" style="display: none;"></div>
                     

@@ -1,9 +1,10 @@
+<?php include 'user-role.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard | Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
+        <title>Admin| Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="style1.css">
     </head>
 
