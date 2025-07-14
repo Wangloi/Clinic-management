@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login System</title>
+        <title>Login | Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="style.css">
         <!-- Pass PHP error to JavaScript -->
         <script>
