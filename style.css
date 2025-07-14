@@ -27,7 +27,7 @@ body{
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #0015D0;
+    background-color: #02026f;
     opacity: 50%; 
     z-index: 0; 
 }
@@ -147,7 +147,7 @@ body{
 }
 
 .form-input:focus {
-    border-color: #4a90e2;
+    border-color: #02026f;
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
@@ -155,7 +155,7 @@ body{
 .login-button {
     width: 100%;
     padding: 12px;
-    background-color: #4a90e2;
+    background-color: #02026f;
     color: white;
     border: none;
     border-radius: 8px;
@@ -167,22 +167,6 @@ body{
 }
 
 .login-button:hover {
-    background-color: #3a7bc8;
-}
-
-
-.logout-button {
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.logout-button:hover {
     background-color: #3a7bc8;
 }
 
