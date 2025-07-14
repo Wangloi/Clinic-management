@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title></title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style1.css">
     </head>
 
     <body>
@@ -16,24 +16,3 @@
 </html>
 
 <?php
-session_start();
-
-// Unset all session variables
-$_SESSION = array();
-
-// Delete the session cookie
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
-    );
-}
-
-// Destroy the session
-session_destroy();
-
-// Redirect to welcome page
-header("Location: welcome.php");
-exit();
-?>
