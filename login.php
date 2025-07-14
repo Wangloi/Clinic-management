@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Define admin credentials (store securely in production)
     $admins = [
         'superadmin' => [
-            'password' => password_hash('superadmin123', PASSWORD_DEFAULT),
+            'password' => password_hash('1234', PASSWORD_DEFAULT),
             'is_superadmin' => true
         ],
         'admin' => [
-            'password' => password_hash('admin123', PASSWORD_DEFAULT),
+            'password' => password_hash('1234', PASSWORD_DEFAULT),
             'is_superadmin' => false
         ]
     ];
