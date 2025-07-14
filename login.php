@@ -7,7 +7,7 @@ header("X-Content-Type-Options: nosniff");
 
 // Redirect if already logged in
 if (isset($_SESSION['username']) && isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
-    header("Location: welcome.php");
+    header("Location: dashboard.php");
     exit();
 }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['logged_in'] = true;
         $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
         $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        header("Location: welcome.php");
+        header("Location: dashboard.php");
         exit();
     } else {
         $_SESSION['login_error'] = "Invalid username or password";
