@@ -1,5 +1,5 @@
 <?php include 'user-role.php'; ?>
-<?php include 'verifer.php'; ?>
+<?php include 'verifyer.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,8 +8,6 @@
         <title>Admin| Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="admin.css">
     </head>
-
-    
 
     <body>
         <div class="logout-section">
