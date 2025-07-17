@@ -1,4 +1,5 @@
 <?php include 'user-role.php'; ?>
+<?php include 'verifer.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,16 +9,7 @@
         <link rel="stylesheet" href="admin.css">
     </head>
 
-    <?php
     
-
-    if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true 
-        || $_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR']
-        || $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
-        header("Location: index.php");
-        exit();
-    }
-    ?>
 
     <body>
         <div class="logout-section">
