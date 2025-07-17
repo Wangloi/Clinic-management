@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login | Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <script>
             <?php if (!empty($error)): ?>
             window.loginError = <?php echo json_encode($error); ?>;
@@ -28,6 +29,7 @@
                     <br><br><br><br>
                     <div class="Text-1">Hello,</div>
                     <div class="Text-2">Welcome!</div>
+                    <div class="doc"><img src="images/akoisdoc.png" alt=""></div>
                     <div class="mess-1">
                         Integrated Digital Clinic 
                         <br>Management System of
