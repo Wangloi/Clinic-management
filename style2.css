@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps:wght@400;700&family=Onest:wght@100..900&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Onest", sans-serif;
+}
+
+.logout-button {
+    background-color: #02026f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    background-color: #3a7bc8;
+}
