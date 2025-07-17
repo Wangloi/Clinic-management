@@ -3,7 +3,7 @@
 body{
     margin: 0;
     padding: 0;
-    background-color: #02026f;
+    background-color: #004aad;
     height: 100%;
     font-family: "Onest", sans-serif;
 }
@@ -27,7 +27,7 @@ body{
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #02026f;
+    background-color: #004aad;
     opacity: 50%; 
     z-index: 0; 
 }
