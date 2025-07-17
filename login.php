@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $_SESSION['login_error'] = "Invalid username or password";
         sleep(1); // Throttle brute force attempts
-        header("Location: login.php");
+        header("Location: index.php");
         exit();
     }
 }
