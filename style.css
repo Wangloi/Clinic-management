@@ -68,7 +68,7 @@ body{
 
 
 .SRCB-Logo img,
-.Example-Logo img {
+.Clinic-Logo img {
     width: 50px;
 }
 
@@ -77,7 +77,7 @@ body{
     border-right: 2px solid white;
 }
 
-.Example-Logo {
+.Clinic-Logo {
     padding-left: 10px;
 }
 
