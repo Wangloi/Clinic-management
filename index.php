@@ -22,7 +22,7 @@
                             <img src="images/SRCB.png" alt="SRCB Logo">
                         </div>
                         <div class="Example-Logo">
-                            <img src="images/SFASS.png" alt="example Logo">
+                            <img src="images/clinic.png" alt="Clinic Logo">
                         </div>
                     </div>
                     <br><br><br><br>
