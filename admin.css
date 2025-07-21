@@ -25,3 +25,8 @@ body{
     background-color: #3a7bc8;
 }
 
+
+.side-bar {
+    width: 150px;
+    background-color: #ffff;
+}

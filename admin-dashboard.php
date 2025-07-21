@@ -11,14 +11,7 @@
 
     <body>
         <div class="side-bar">
-            <div class="profile">
-                <div class="ava">
-                    
-                </div>
-            <div class="logout-section">
-                <?php echo htmlspecialchars($_SESSION['username']); ?>
-                <a href="logout.php" class="logout-button">Logout</a>
-            </div>    
+            
         </div>
 
     </body>
