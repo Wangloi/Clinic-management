@@ -11,8 +11,8 @@
     </head>
 
     <body>
-        <div class="context">
-            <div class="side-bar">
+        <div class="context flex flex-col lg:flex-row h-screen">
+             <div class="sidebar hidden lg:flex lg:w-[300px] h-screen bg-white flex-col items-center fixed lg:relative">
                 <div class="Name">
                     <div class="flex items-center gap-2">
                         <img src="images/clinic.png" alt="Clinic Logo" class="h-auto"  style="width: auto; max-width: 50px">
@@ -21,6 +21,7 @@
                 </div>
 
                 <div class="nav">
+                    <div class="text-center pt-[45px] w-full px-4"></div>
                     <div class="flex flex-col space-y-2 ">
                         <!-- Dashboard -->
                         <a href="admin-dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200">
@@ -62,11 +63,22 @@
                 </div>
             </div>
 
-            <div class="main-context">
+            <button class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
 
+            <div class="main-context flex-1 h-screen bg-gray-100 overflow-auto">
+                <H2>Dashboard</H2>
+                <div class="Recent">
+
+                </div>
             </div>
     
         </div>
+
+    <script src="mobile-nav.js"></script>
     </body>
 </html>
 
