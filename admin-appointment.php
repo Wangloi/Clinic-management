@@ -69,8 +69,8 @@
                 </svg>
             </button>
 
-            <div class="main-context flex-1 h-screen bg-gray-100 overflow-auto">
-                <H2>Dashboard</H2>
+            <div class="main-context flex-1 h-screen overflow-auto">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 border-b border-gray-200 pt-[38px] pl-[60px]">Appointments</h2>
                 <div class="Recent">
 
                 </div>
