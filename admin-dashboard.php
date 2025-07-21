@@ -7,25 +7,61 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin| Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="admin.css">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
 
     <body>
         <div class="context">
             <div class="side-bar">
                 <div class="Name">
-                    <img src="images/clinic.png" alt="Clinic Logo"> SRCB Clinic
+                    <div class="flex items-center gap-2">
+                        <img src="images/clinic.png" alt="Clinic Logo" class="h-auto"  style="width: auto; max-width: 50px">
+                        <span class="text-lg md:text-xl font-semibold text-gray-800">SRCB Clinic</span>
+                    </div>
                 </div>
 
                 <div class="nav">
-                    <div class="dashboard"><img src="images/dashboard.png" alt="">Dashboard</div>
-                    <div class="students"><img src="images/students.png" alt="">Students</div>
-                    <div class="clinic-visit"><img src="images/clinic-visit.png" alt="">Clinic-visits</div>
-                    <div class="medication"><img src="images/medication.png" alt="">Medication</div>
-                    <div class="appointments"><img src="images/appointments.png" alt="">Appointments</div>
-                    <div class="reports"><img src="images/reports.png" alt="">Reports</div>
+                    <div class="flex flex-col space-y-2 ">
+                        <!-- Dashboard -->
+                        <a href="admin-dashboard.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200">
+                            <img src="images/dashboard.png" alt="Dashboard icon" class="w-5 h-5">
+                            <span class="font-medium">Dashboard</span>
+                        </a>
+
+                        <!-- Students -->
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-green-50 hover:text-green-600 transition-all duration-200">
+                            <img src="images/students.png" alt="Students icon" class="w-5 h-5">
+                            <span class="font-medium">Students</span>
+                        </a>
+
+                        <!-- Clinic Visits -->
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-50 hover:text-purple-600 transition-all duration-200">
+                            <img src="images/clinic-visit.png" alt="Clinic visits icon" class="w-5 h-5">
+                            <span class="font-medium">Clinic Visits</span>
+                        </a>
+
+                        <!-- Medication -->
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-yellow-50 hover:text-yellow-600 transition-all duration-200">
+                            <img src="images/medication.png" alt="Medication icon" class="w-5 h-5">
+                            <span class="font-medium">Medication</span>
+                        </a>
+
+                        <!-- Appointments -->
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all duration-200">
+                            <img src="images/appointments.png" alt="Appointments icon" class="w-5 h-5">
+                            <span class="font-medium">Appointments</span>
+                        </a>
+
+                        <!-- Reports -->
+                        <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200">
+                            <img src="images/reports.png" alt="Reports icon" class="w-5 h-5">
+                            <span class="font-medium">Reports</span>
+                        </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
+    
         </div>
     </body>
 </html>
