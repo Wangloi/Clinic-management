@@ -7,26 +7,49 @@ body{
     font-family: "Onest", sans-serif;
 }
 
-
-
-.logout-button {
-    background-color: #02026f;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-}
-
-.logout-button:hover {
-    background-color: #3a7bc8;
-}
-
-
 .side-bar {
-    width: 150px;
-    background-color: #ffff;
+    width: 300px;
+    height: 100vh;
+    background-color: #02026f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Name img {
+    width: 50px;
+}
+
+.Name {
+    color: #fff;
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+.nav{
+    text-align: center;
+    padding: 0;
+}
+
+
+.dashboard,
+.students,
+.clinic-visit,
+.medication,
+.appointments,
+.reports {
+    color: #fff;
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+.dashboard img,
+.students img,
+.clinic-visit img,
+.medication img,
+.appointments img,
+.reports img {
+   width: 50px; 
 }
