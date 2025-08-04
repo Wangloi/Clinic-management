@@ -69,10 +69,65 @@
                 </svg>
             </button>
 
-            <div class="main-context flex-1 h-screen bg-gray-100 overflow-auto">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 border-b border-gray-200 pt-[38px] pl-[60px]">Dashboard</h2>
+            <div class="main-context flex-1 h-screen overflow-auto">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Dashboard</h2>
+                <div class="content">
+                    <div class="table" style="width: 500px; height: 400px; background-color: #ffffff; margin-left: 60px; border-radius: 25px; padding: 20px;">
+                    <h3 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-medium">Recent Clinic Visits</h3>
+                    <div class="overflow-auto" style="height: calc(100% - 40px);">
+                        <table class="w-full border-collapse">
+                            <!-- Table Head -->
+                            <thead>
+                                <tr class="border-b-2 border-t border-gray-500">
+                                    <th class="py-2 px-2 text-left text-[10px] md:text-[12px] font-normal">Date/Time</th>
+                                    <th class="py-2 px-2 text-left text-[10px] md:text-[12px] font-normal">Student</th>
+                                    <th class="py-2 px-2 text-left text-[10px] md:text-[12px] font-normal">Grade</th>
+                                    <th class="py-2 px-2 text-left text-[10px] md:text-[12px] font-normal">Reason</th>
+                                    <th class="py-2 px-2 text-left text-[10px] md:text-[12px] font-normal">Medication</th>
+                                </tr>
+                            </thead>
+                            
+                            <!-- Table Body -->
+                            <tbody>
+                                <!-- Row 1 -->
+                                <tr class="border-b border-gray-300">
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">2023-11-15 08:30</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Sarah Johnson</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">7</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Headache</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Acetaminophen</td>
+                                </tr>
+                                
+                                <!-- Row 2 -->
+                                <tr class="border-b border-gray-300">
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">2023-11-15 09:45</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Michael Chen</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">9</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Allergy</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Antihistamine</td>
+                                </tr>
+                                
+                                <!-- Row 3 -->
+                                <tr class="border-b border-gray-300">
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">2023-11-15 10:15</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Emily Rodriguez</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">6</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Stomach ache</td>
+                                    <td class="py-2 px-2 text-[10px] md:text-[11px]">Antacid</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+
+                    <div class="total-numbers">
+                        <h4 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-medium">Total Number of Students</h4>
+                        
+                    </div>
+
                 </div>
             </div>
+
     
         </div>
 
