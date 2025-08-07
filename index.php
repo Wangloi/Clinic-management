@@ -14,35 +14,14 @@
     </head>
 
     <body>
-        <div class="login">
-            <div class="layer-1">
-                <div class="black-BG">
-                    <div class="Logos">
-                        <div class="SRCB-Logo">
-                            <img src="images/SRCB.png" alt="SRCB Logo">
-                        </div>
-                        <div class="clinic-Logo">
-                            <img src="images/clinic.png" alt="Clinic Logo">
-                        </div>
-                    </div>
-                    <br><br><br><br>
-                    <div class="Text-1">Hello,</div>
-                    <div class="Text-2">Welcome!</div>
-                    <div class="doc"><img src="images/akoisdoc.png" alt=""></div>
-                    <div class="mess-1">
-                        Integrated Digital Clinic 
-                        <br>Management System of
-                        <br>St. Rita's College of 
-                        Balingasag
-                    </div>
-                </div>
+        <div class="context">
+            <div class="Logos">
+                <div class="SRCB-logo"><img src="images/SRCB.png" alt="SRCB logo"></div>
+                <div class="clinic-logo"><img src="images/clinic.png" alt="clinic logo"></div>
             </div>
-            <div class="layer-2">
-                <div class="mess-2">
-                    <div class="Text-3">Login</div>
-                    <div class="Text-4">Ready to help students today? Log in!</div>
-                </div>
+            <div class="SRCB-clinic">SRCB Clinic</div>
 
+            <div class="login">
                 <div id="admin-error-message" style="display: none;"><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></div>
                 <form action="login.php" method="POST" class="login-form" id="loginForm">
                     <div class="error-message" id="errorContainer" style="display: none;"></div>
@@ -62,8 +41,7 @@
                     </div>
                 </form>
             </div>
+            <script src="error-mess.js"></script>
         </div>
-
-        <script src="error-mess.js"></script>
     </body>
 </html>

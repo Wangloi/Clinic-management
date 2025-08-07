@@ -134,18 +134,20 @@
                         <div class="visit-distribution" style="width: 257px; height: 235px; background-color: #ffffff; margin-left: 15px; margin-top: 15px; border-radius: 25px; padding: 20px;">
                             <h4 class="text-[10px] md:text-[16px] text-gray-800 mb-4 pb-2 font-bold">Visit Distribution by Grade</h4>  
                         </div>
-                        
                     </div>
+
+                    <div class="stats" style="width: 257px; height: 400px; background-color: #ffffff; margin-left: 15px; border-radius: 25px; padding: 20px;">
+                            <h4 class="text-[10px] md:text-[16px] text-gray-800 font-bold">Medication Usage Stats</h4>
+                            <h4 class="text-[6px] md:text-[12px] text-gray-800 mb-4 pb-2 font-medium">00/00/00</h4>
+                    </div>
+
                 </div>
 
                 <div class="down-content">
-                    <div class="analytics" style="width: 600px; height: 400px; background-color: #ffffff; margin-left: 60px; margin-top: 15px; border-radius: 25px; padding: 20px;">
+                    <div class="analytics" style="width: 1145px; height: 400px; background-color: #ffffff; margin-left: 60px; margin-top: 15px; border-radius: 25px; padding: 20px;">
                         <h5 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-bold">Health Issue Trends</h5>
                     </div>
 
-                    <div class="total-numbers" style="width: 257px; height: 150px; background-color: #ffffff; margin-left: 15px; border-radius: 25px; padding: 20px;">
-                        <h4 class="text-[10px] md:text-[16px] text-gray-800 mb-4 pb-2 font-bold">Total Number of Students</h4>  
-                    </div>
                 </div>
             </div>
 
@@ -155,4 +157,3 @@
     <script src="mobile-nav.js"></script>
     </body>
 </html>
-

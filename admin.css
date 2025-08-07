@@ -80,9 +80,17 @@ body{
 .side-content{
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
 .down-content {
     display: flex;
 }
+
+.filter{
+    display: flex;
+}
+
+.searchInput{
+    padding-right: 100px;
+}
+
