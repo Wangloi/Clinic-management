@@ -77,10 +77,18 @@
             <div class="main-context flex-1 h-screen overflow-auto">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Students</h2>
                 <div class="student-info" style="width: 1145px; height: 500px; background-color: #ffffff; margin-left: 60px; border-radius: 25px; padding: 20px;">
-                    <h3 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-medium flex justify-between items-center">
-                    <span>Students Information</span>
-                    <input type="text" id="searchInput" placeholder="Search..."class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"></h3>
-                    <div class="filter">
+                    <div class="container mx-auto px-4 py-8">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <h2 class="text-xl font-bold text-gray-800">Students Information</h2>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <input 
+                            type="text" 
+                            placeholder="Search students..." 
+                            class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        >
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                            Add New Student
+                        </button>
                         <select id="sortFilter" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
                         <option value="name-asc">ASC</option>
                         <option value="name-desc">DESC</option>
@@ -92,20 +100,6 @@
                         <option value="shs">Senior High School</option>
                         <option value="college">College</option>
                         </select>
-                    </div>
-
-                    <div class="container mx-auto px-4 py-8">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                        <h2 class="text-xl font-bold text-gray-800">Student Records</h2>
-                        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                        <input 
-                            type="text" 
-                            placeholder="Search students..." 
-                            class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                        >
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
-                            Add New Student
-                        </button>
                         </div>
                     </div>
 
@@ -142,7 +136,6 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    </div>
                                     <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">John Doe</div>
                                     </div>
@@ -156,8 +149,8 @@
                                     3rd Year
                                 </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">A</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Computer Science</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">BSIT 3</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">HED</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">12</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex justify-end space-x-2">
@@ -180,16 +173,10 @@
                                 </td>
                             </tr>
 
-                            <!-- Student 2-10 (similar structure) -->
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                    <span class="text-purple-600 font-medium">MS</span>
-                                    </div>
                                     <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">Maria Santos</div>
-                                    <div class="text-sm text-gray-500">maria.s@example.com</div>
                                     </div>
                                 </div>
                                 </td>
@@ -211,12 +198,8 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                                    <span class="text-yellow-600 font-medium">CR</span>
-                                    </div>
                                     <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">Carlos Reyes</div>
-                                    <div class="text-sm text-gray-500">carlos.r@example.com</div>
                                     </div>
                                 </div>
                                 </td>
@@ -233,14 +216,6 @@
                                 <!-- Action buttons -->
                                 </td>
                             </tr>
-
-                            <!-- Additional students (4-10) would follow the same pattern -->
-                            <!-- Student 4 -->
-                            <tr class="hover:bg-gray-50">
-                                <!-- Similar structure as above -->
-                            </tr>
-                            
-                            <!-- Continue through Student 10 -->
 
                             </tbody>
                         </table>

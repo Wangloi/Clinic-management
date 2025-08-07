@@ -86,9 +86,6 @@ body{
     display: flex;
 }
 
-.filter{
-    display: flex;
-}
 
 .searchInput{
     padding-right: 100px;
