@@ -58,6 +58,12 @@
                             <img src="images/reports.png" alt="Reports icon" class="w-5 h-5">
                             <span class="font-medium">Reports</span>
                         </a>
+
+                        <!-- Help Center -->
+                        <a href="admin-help.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-all duration-200">
+                            <img src="images/reports.png" alt="Reports icon" class="w-5 h-5">
+                            <span class="font-medium">Help Center</span>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -72,8 +78,8 @@
             <div class="main-context flex-1 h-screen overflow-auto">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Dashboard</h2>
                 <div class="content">
-                    <div class="table" style="width: 500px; height: 400px; background-color: #ffffff; margin-left: 60px; border-radius: 25px; padding: 20px;">
-                    <h3 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-medium">Recent Clinic Visits</h3>
+                    <div class="table" style="width: 600px; height: 400px; background-color: #ffffff; margin-left: 60px; border-radius: 25px; padding: 20px;">
+                    <h3 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-bold">Recent Clinic Visits</h3>
                     <div class="overflow-auto" style="height: calc(100% - 40px);">
                         <table class="w-full border-collapse">
                             <!-- Table Head -->
@@ -120,11 +126,26 @@
                     </div>
                     </div>
 
-                    <div class="total-numbers">
-                        <h4 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-medium">Total Number of Students</h4>
+                    <div class="side-content">
+                        <div class="total-numbers" style="width: 257px; height: 150px; background-color: #ffffff; margin-left: 15px; border-radius: 25px; padding: 20px;">
+                            <h4 class="text-[10px] md:text-[16px] text-gray-800 mb-4 pb-2 font-bold">Total Number of Students</h4>  
+                        </div>
+
+                        <div class="visit-distribution" style="width: 257px; height: 235px; background-color: #ffffff; margin-left: 15px; margin-top: 15px; border-radius: 25px; padding: 20px;">
+                            <h4 class="text-[10px] md:text-[16px] text-gray-800 mb-4 pb-2 font-bold">Visit Distribution by Grade</h4>  
+                        </div>
                         
                     </div>
+                </div>
 
+                <div class="down-content">
+                    <div class="analytics" style="width: 600px; height: 400px; background-color: #ffffff; margin-left: 60px; margin-top: 15px; border-radius: 25px; padding: 20px;">
+                        <h5 class="text-[12px] md:text-[18px] text-gray-800 mb-4 pb-2 font-bold">Health Issue Trends</h5>
+                    </div>
+
+                    <div class="total-numbers" style="width: 257px; height: 150px; background-color: #ffffff; margin-left: 15px; border-radius: 25px; padding: 20px;">
+                        <h4 class="text-[10px] md:text-[16px] text-gray-800 mb-4 pb-2 font-bold">Total Number of Students</h4>  
+                    </div>
                 </div>
             </div>
 

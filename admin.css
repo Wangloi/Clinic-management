@@ -77,6 +77,12 @@ body{
    display: flex;
 }
 
-.total-numbers{
+.side-content{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
+.down-content {
+    display: flex;
 }

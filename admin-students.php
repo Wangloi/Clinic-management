@@ -58,6 +58,11 @@
                             <img src="images/reports.png" alt="Reports icon" class="w-5 h-5">
                             <span class="font-medium">Reports</span>
                         </a>
+                        <!-- Help Center -->
+                         <a href="admin-help.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-all duration-200">
+                            <img src="images/reports.png" alt="Reports icon" class="w-5 h-5">
+                            <span class="font-medium">Help Center</span>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -69,13 +74,15 @@
                 </svg>
             </button>
 
-            <div class="main-context flex-1 h-screen bg-gray-500 overflow-auto">
+            <div class="main-context flex-1 h-screen overflow-auto">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Students</h2>
+                <div class="Recent">
+
+                </div>
             </div>
-        
+    
         </div>
 
     <script src="mobile-nav.js"></script>
     </body>
 </html>
-
