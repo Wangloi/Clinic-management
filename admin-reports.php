@@ -77,7 +77,7 @@
             <div class="main-context flex-1 h-screen overflow-auto">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Reports</h2>
                 <div class="Recent">
-
+                    <a href="https://meet.google.com/vqu-fibe-spx">GOG</a>
                 </div>
             </div>
     

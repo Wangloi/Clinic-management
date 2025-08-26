@@ -1,0 +1,64 @@
+Login attempt: email=joshua@gmail.com, time=2025-08-23 19:58:24
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Login attempt: email=wawang@example.com, time=2025-08-23 19:58:39
+No Head_Staff record found for email=wawang@example.com
+Clinic_Staff found for email=wawang@example.com
+Password verification failed for Clinic_Staff email=wawang@example.com
+Login attempt: email=joshua@gmail.com, password_length=11, time=2025-08-23 20:01:23
+No Head_Staff record found: email=joshua@gmail.com
+Clinic_Staff found: email=joshua@gmail.com, staff_id=2, hash_length=60
+Password verification failed for Clinic_Staff: email=joshua@gmail.com
+Login attempt: email=wawang@example.com, password_length=11, time=2025-08-23 20:01:37
+No Head_Staff record found: email=wawang@example.com
+Clinic_Staff found: email=wawang@example.com, staff_id=3, hash_length=11
+Password verification failed for Clinic_Staff: email=wawang@example.com
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:02:07
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Login attempt: email=admin@example.com, time=2025-08-23 20:03:57
+No Head_Staff record found for email=admin@example.com
+Clinic_Staff found for email=admin@example.com
+Password verification failed for Clinic_Staff email=admin@example.com
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:04:07
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:04:49
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:06:52
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:11:54
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+DB Password hash: $2y$10$Gp2hpNVQzCKoLiXdPaN1duPXnhPZbToNq0Nch2YrZb20SMy6.4TjK
+Input password: ashjoshua123
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Hashed input: $2y$10$YRRMkMirnfGj.PGjydjR8eJr9QLTWfNrc62C5pn6pHeU1kAtQBeiy
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:12:10
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+DB Password hash: $2y$10$Gp2hpNVQzCKoLiXdPaN1duPXnhPZbToNq0Nch2YrZb20SMy6.4TjK
+Input password: password123
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Hashed input: $2y$10$EoGEygGm.EMSxyriiagsVO.x9nObbJeGYzRX6fjjmVQLBbCa7HCPC
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:12:24
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+DB Password hash: $2y$10$Gp2hpNVQzCKoLiXdPaN1duPXnhPZbToNq0Nch2YrZb20SMy6.4TjK
+Input password: password123
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Hashed input: $2y$10$5bMLCNb0WF4q7EZsi2QWJ..8qprzHcZ3jCEADSq4I32e/aSEfPpcq
+Login attempt: email=joshua@gmail.com, time=2025-08-23 20:12:46
+No Head_Staff record found for email=joshua@gmail.com
+Clinic_Staff found for email=joshua@gmail.com
+DB Password hash: $2y$10$Gp2hpNVQzCKoLiXdPaN1duPXnhPZbToNq0Nch2YrZb20SMy6.4TjK
+Input password: ashjoshua123
+Password verification failed for Clinic_Staff email=joshua@gmail.com
+Hashed input: $2y$10$z/VmtkTngemPj3qC6dloIOV/aV0JGrIQOGKDIxAAS96wH9asHnVUO

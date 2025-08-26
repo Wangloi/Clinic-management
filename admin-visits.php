@@ -75,14 +75,209 @@
             </button>
 
             <div class="main-context flex-1 h-screen overflow-auto">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Appointments</h2>
-                <div class="Recent">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Clinic Visits</h2>
+                <?php
+                include 'visits_data.php';
 
+                // Get filters from query parameters
+                $filters = [
+                    'search' => $_GET['search'] ?? '',
+                    'patient_type' => $_GET['patient_type'] ?? '',
+                    'sort' => $_GET['sort'] ?? 'date-desc'
+                ];
+
+                // Pagination settings
+                $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+                $rows_per_page = isset($_GET['rows']) ? max(1, intval($_GET['rows'])) : 10;
+                $offset = ($current_page - 1) * $rows_per_page;
+
+                // Get data
+                $total_visits = getTotalClinicVisitsCount($filters);
+                $visits = getAllClinicVisits($filters, $rows_per_page, $offset);
+                $total_pages = ceil($total_visits / $rows_per_page);
+                ?>
+
+                <div class="visit-info" style="width: 1145px; min-height: 500px; background-color: #ffffff; margin: 0 auto; border-radius: 25px; padding: 20px;">
+                    <div class="container mx-auto px-4 py-8">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                            <h2 class="text-xl font-bold text-gray-800">Clinic Visits Information</h2>
+                            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                                <form method="GET" class="flex flex-wrap gap-3">
+                                    <input type="hidden" name="page" value="1">
+                                    <input 
+                                        type="text" 
+                                        name="search" 
+                                        placeholder="Search visits..." 
+                                        value="<?php echo htmlspecialchars($filters['search']); ?>"
+                                        class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-40"
+                                    >
+                                    <select name="patient_type" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <option value="">All Patients</option>
+                                        <option value="Student" <?php echo $filters['patient_type'] === 'Student' ? 'selected' : ''; ?>>Students</option>
+                                        <option value="Staff" <?php echo $filters['patient_type'] === 'Staff' ? 'selected' : ''; ?>>Staff</option>
+                                        <option value="Other" <?php echo $filters['patient_type'] === 'Other' ? 'selected' : ''; ?>>Others</option>
+                                    </select>
+                                    <select name="sort" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <option value="date-desc" <?php echo $filters['sort'] === 'date-desc' ? 'selected' : ''; ?>>Newest First</option>
+                                        <option value="date-asc" <?php echo $filters['sort'] === 'date-asc' ? 'selected' : ''; ?>>Oldest First</option>
+                                    </select>
+                                    <select name="rows" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="this.form.submit()">
+                                        <option value="5" <?php echo $rows_per_page == 5 ? 'selected' : ''; ?>>5 rows</option>
+                                        <option value="10" <?php echo $rows_per_page == 10 ? 'selected' : ''; ?>>10 rows</option>
+                                        <option value="20" <?php echo $rows_per_page == 20 ? 'selected' : ''; ?>>20 rows</option>
+                                        <option value="50" <?php echo $rows_per_page == 50 ? 'selected' : ''; ?>>50 rows</option>
+                                    </select>
+                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Apply</button>
+                                    <button type="button" onclick="clearFilters()" class="bg-gray-500 text-white px-3 py-1 rounded text-sm">Clear</button>
+                                </form>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                                    Add New Visit
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow overflow-hidden mx-auto">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 mx-auto">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Patient Name
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Patient ID
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Grade Level
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Section
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Reason
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Treatment
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <?php if (!empty($visits)): ?>
+                                            <?php foreach ($visits as $visit): ?>
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-4 py-3 whitespace-nowrap">
+                                                    <div class="text-sm font-medium text-gray-900">
+                                                        <?php echo htmlspecialchars(getPatientName($visit)); ?>
+                                                    </div>
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900 text-center"><?php echo $visit['patient_id']; ?></div>
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                    <?php echo htmlspecialchars(getPatientInfo($visit)); ?>
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                    <?php echo htmlspecialchars($visit['section_name'] ?? 'N/A'); ?>
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                    <?php echo htmlspecialchars($visit['reason']); ?>
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                    <?php echo htmlspecialchars($visit['treatment']); ?>
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-center">
+                                                    <div class="flex justify-center space-x-2">
+                                                        <button class="text-blue-600 hover:text-blue-900" title="Edit" onclick="handleVisitAction('edit', <?php echo $visit['visit_id']; ?>)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                                            </svg>
+                                                        </button>
+                                                        <button class="text-red-600 hover:text-red-900" title="Delete" onclick="handleVisitAction('delete', <?php echo $visit['visit_id']; ?>)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                        <button class="text-green-600 hover:text-green-900" title="View Details" onclick="handleVisitAction('view', <?php echo $visit['visit_id']; ?>)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <tr>
+                                                <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">
+                                                    No visits found. <?php echo !empty($filters['search']) ? 'Try a different search term.' : ''; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div class="text-sm text-gray-700">
+                                Showing <?php echo count($visits); ?> of <?php echo $total_visits; ?> visits
+                                (Page <?php echo $current_page; ?> of <?php echo max(1, $total_pages); ?>)
+                            </div>
+                            
+                            <div class="flex gap-1 justify-center">
+                                <!-- First Page -->
+                                <button onclick="goToPage(1)" <?php echo $current_page <= 1 ? 'disabled' : ''; ?> 
+                                    class="px-2 py-1 border rounded text-xs <?php echo $current_page <= 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'; ?>">
+                                    &laquo;
+                                </button>
+                                
+                                <!-- Previous Page -->
+                                <button onclick="goToPage(<?php echo $current_page - 1; ?>)" <?php echo $current_page <= 1 ? 'disabled' : ''; ?> 
+                                    class="px-2 py-1 border rounded text-xs <?php echo $current_page <= 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'; ?>">
+                                    &lsaquo;
+                                </button>
+                                
+                                <!-- Page Numbers -->
+                                <?php
+                                $start_page = max(1, $current_page - 2);
+                                $end_page = min($total_pages, $start_page + 4);
+                                $start_page = max(1, $end_page - 4);
+                                
+                                for ($i = $start_page; $i <= $end_page; $i++):
+                                ?>
+                                    <button onclick="goToPage(<?php echo $i; ?>)" 
+                                        class="px-2 py-1 border rounded text-xs <?php echo $i == $current_page ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'; ?>">
+                                        <?php echo $i; ?>
+                                    </button>
+                                <?php endfor; ?>
+                                
+                                <!-- Next Page -->
+                                <button onclick="goToPage(<?php echo $current_page + 1; ?>)" <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?> 
+                                    class="px-2 py-1 border rounded text-xs <?php echo $current_page >= $total_pages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'; ?>">
+                                    &rsaquo;
+                                </button>
+                                
+                                <!-- Last Page -->
+                                <button onclick="goToPage(<?php echo $total_pages; ?>)" <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?> 
+                                    class="px-2 py-1 border rounded text-xs <?php echo $current_page >= $total_pages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50'; ?>">
+                                    &raquo;
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
     
         </div>
 
-    <script src="mobile-nav.js"></script>
+        <script src="mobile-nav.js"></script>
+        <script src="visits.js"></script>
+        
+        <!-- Include the edit visit modal -->
+        <?php include 'edit-visit-modal.html'; ?>
     </body>
 </html>

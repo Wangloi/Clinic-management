@@ -52,7 +52,6 @@
                             <img src="images/appointments.png" alt="Appointments icon" class="w-5 h-5">
                             <span class="font-medium">Appointments</span>
                         </a>
-
                         <!-- Reports -->
                         <a href="admin-reports.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200">
                             <img src="images/reports.png" alt="Reports icon" class="w-5 h-5">

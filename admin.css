@@ -91,3 +91,29 @@ body{
     padding-right: 100px;
 }
 
+.student-info {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+}
+
+table {
+    margin: 0 auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}

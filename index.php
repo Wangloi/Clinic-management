@@ -23,12 +23,12 @@
 
             <div class="login">
                 <div id="admin-error-message" style="display: none;"><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></div>
-                <form action="login.php" method="POST" class="login-form" id="loginForm">
+                <form action="index.php" method="POST" class="login-form" id="loginForm">
                     <div class="error-message" id="errorContainer" style="display: none;"></div>
                     
                     <div class="form-group">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" class="form-input user" name="username" required placeholder="Enter your username">
+                        <label for="username" class="form-label">Email</label>
+                        <input type="email" id="username" class="form-input user" name="username" required placeholder="Enter your email">
                     </div>
 
                     <div class="form-group">
@@ -41,7 +41,7 @@
                     </div>
                 </form>
             </div>
-            <script src="error-mess.js"></script>
+            <script src="success-mess.js"></script>
         </div>
     </body>
 </html>
