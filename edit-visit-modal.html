@@ -1,8 +1,9 @@
 <!-- Edit Visit Modal -->
-<div id="editVisitModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
+<div id="editVisitModal" class="fixed inset-0 flex items-center justify-center z-[9999] hidden backdrop-blur-sm">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto relative z-[10000] pointer-events-auto">
         <div class="px-6 py-4 border-b border-gray-200">
             <h3 class="text-xl font-semibold text-gray-800">Edit Clinic Visit</h3>
+            <span class="close absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer text-2xl" onclick="closeModal('editVisitModal')">&times;</span>
         </div>
         
         <div class="px-6 py-4">
@@ -61,10 +62,11 @@
 </div>
 
 <!-- View Visit Modal -->
-<div id="viewVisitModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
+<div id="viewVisitModal" class="fixed inset-0 flex items-center justify-center z-[9999] hidden backdrop-blur-sm">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto relative z-[10000] pointer-events-auto">
         <div class="px-6 py-4 border-b border-gray-200">
             <h3 class="text-xl font-semibold text-gray-800">Visit Details</h3>
+            <span class="close absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer text-2xl" onclick="closeModal('viewVisitModal')">&times;</span>
         </div>
         
         <div class="px-6 py-4">
@@ -129,11 +131,7 @@
 </div>
 
 <style>
-#editVisitModal, #viewVisitModal {
-    backdrop-filter: blur(4px);
-}
-
-#editVisitModal > div, #viewVisitModal > div {
+.modal > div {
     max-height: 90vh;
     overflow-y: auto;
 }

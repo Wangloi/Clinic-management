@@ -8,6 +8,7 @@
         <title>Admin| Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="admin.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="modal.css">
     </head>
 
     <body>
@@ -111,13 +112,13 @@
                                         value="<?php echo htmlspecialchars($filters['search']); ?>"
                                         class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-40"
                                     >
-                                    <select name="patient_type" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <select name="patient_type" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="this.form.submit()">
                                         <option value="">All Patients</option>
                                         <option value="Student" <?php echo $filters['patient_type'] === 'Student' ? 'selected' : ''; ?>>Students</option>
                                         <option value="Staff" <?php echo $filters['patient_type'] === 'Staff' ? 'selected' : ''; ?>>Staff</option>
                                         <option value="Other" <?php echo $filters['patient_type'] === 'Other' ? 'selected' : ''; ?>>Others</option>
                                     </select>
-                                    <select name="sort" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <select name="sort" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="this.form.submit()">
                                         <option value="date-desc" <?php echo $filters['sort'] === 'date-desc' ? 'selected' : ''; ?>>Newest First</option>
                                         <option value="date-asc" <?php echo $filters['sort'] === 'date-asc' ? 'selected' : ''; ?>>Oldest First</option>
                                     </select>
@@ -127,10 +128,8 @@
                                         <option value="20" <?php echo $rows_per_page == 20 ? 'selected' : ''; ?>>20 rows</option>
                                         <option value="50" <?php echo $rows_per_page == 50 ? 'selected' : ''; ?>>50 rows</option>
                                     </select>
-                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Apply</button>
-                                    <button type="button" onclick="clearFilters()" class="bg-gray-500 text-white px-3 py-1 rounded text-sm">Clear</button>
                                 </form>
-                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm" onclick="openAddVisitModal()">
                                     Add New Visit
                                 </button>
                             </div>
@@ -275,9 +274,9 @@
         </div>
 
         <script src="mobile-nav.js"></script>
+        <script src="modal.js"></script>
         <script src="visits.js"></script>
-        
-        <!-- Include the edit visit modal -->
         <?php include 'edit-visit-modal.html'; ?>
+        <?php include 'add-visit-modal.html'; ?>
     </body>
 </html>

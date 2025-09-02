@@ -49,7 +49,7 @@ function editVisit(visitId) {
     const modal = document.getElementById('editVisitModal');
     if (modal) {
         // Fetch visit data and populate form
-        fetch(`get-visit-data.php?id=${visitId}`)
+        fetch(`visit-actions.php?action=get-data&id=${visitId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -67,8 +67,8 @@ function editVisit(visitId) {
                     document.getElementById('edit-treatment').value = data.treatment;
                     document.getElementById('edit-remarks').value = data.remarks;
                     
-                    // Show modal
-                    modal.classList.remove('hidden');
+                    // Use centralized modal manager to show modal
+                    modalManager.openModal('editVisitModal');
                 } else {
                     alert('Error loading visit data: ' + data.message);
                 }
@@ -122,7 +122,7 @@ function deleteVisit(visitId) {
         console.log('Deleting visit:', visitId);
         
         // Send delete request to server
-        fetch(`delete-visit.php?id=${visitId}`, {
+        fetch(`visit-actions.php?action=delete&id=${visitId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ function viewVisitDetails(visitId) {
     const modal = document.getElementById('viewVisitModal');
     if (modal) {
         // Fetch visit details
-        fetch(`get-visit-details.php?id=${visitId}`)
+        fetch(`visit-actions.php?action=get-details&id=${visitId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -193,6 +193,59 @@ function viewVisitDetails(visitId) {
         // Redirect to details page if modal doesn't exist
         window.location.href = `visit-details.php?id=${visitId}`;
     }
+}
+
+// Function to open add visit modal
+function openAddVisitModal() {
+    console.log('Opening add visit modal');
+    
+    // Check if add modal exists
+    const modal = document.getElementById('addVisitModal');
+    if (modal) {
+        console.log('Modal ID:', modal.id);
+        console.log('Modal exists:', modal !== null);
+        
+        // Clear the form
+        document.getElementById('addVisitForm').reset();
+        
+        // Use centralized modal manager to show modal if available, otherwise use fallback
+        if (typeof modalManager !== 'undefined' && modalManager.openModal) {
+            modalManager.openModal('addVisitModal');
+        } else {
+            // Fallback: show modal directly
+            modal.classList.remove('hidden');
+        }
+    } else {
+        console.error('Add visit modal not found');
+    }
+}
+
+// Function to submit add visit form
+function submitAddVisitForm() {
+    const form = document.getElementById('addVisitForm');
+    if (!form) return;
+
+    const formData = new FormData(form);
+    
+    fetch(form.action, {
+        method: form.method,
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Visit added successfully!');
+            // Close modal and reload page
+            closeModal('addVisitModal');
+            location.reload();
+        } else {
+            alert('Error adding visit: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding visit. Please try again.');
+    });
 }
 
 // Filter functionality

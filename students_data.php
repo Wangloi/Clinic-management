@@ -32,6 +32,12 @@ function getAllStudents($filters = [], $limit = 10, $offset = 0) {
                 case 'id-desc':
                     $orderBy = "s.student_id DESC";
                     break;
+                case 'visits-asc':
+                    $orderBy = "total_visits ASC";
+                    break;
+                case 'visits-desc':
+                    $orderBy = "total_visits DESC";
+                    break;
             }
         }
 
@@ -92,9 +98,6 @@ function getTotalStudentsCount($filters = []) {
         $stmt = $pdo->prepare("
             SELECT COUNT(*) as total_count
             FROM Students s
-            LEFT JOIN Sections sec ON s.section_id = sec.section_id
-            LEFT JOIN Programs p ON sec.program_id = p.program_id
-            LEFT JOIN Departments d ON p.department_id = d.department_id
             WHERE 1=1 $whereClause
         ");
         
@@ -125,5 +128,48 @@ function getDepartmentDisplayName($department) {
         'Grade School' => 'Grade School'
     ];
     return $names[$department] ?? $department;
+}
+
+// Get all programs from database
+function getAllPrograms() {
+    include 'connection.php';
+    
+    try {
+        $stmt = $pdo->prepare("
+            SELECT p.program_id, p.program_name, d.department_level
+            FROM Programs p
+            LEFT JOIN Departments d ON p.department_id = d.department_id
+            ORDER BY d.department_level, p.program_name
+        ");
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    } catch (PDOException $e) {
+        error_log("Database error in getAllPrograms: " . $e->getMessage());
+        return [];
+    }
+}
+
+// Get all sections from database
+function getAllSections() {
+    include 'connection.php';
+    
+    try {
+        $stmt = $pdo->prepare("
+            SELECT s.section_id, s.section_name, p.program_id, p.program_name, d.department_level
+            FROM Sections s
+            LEFT JOIN Programs p ON s.program_id = p.program_id
+            LEFT JOIN Departments d ON p.department_id = d.department_id
+            ORDER BY d.department_level, p.program_name, s.section_name
+        ");
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    } catch (PDOException $e) {
+        error_log("Database error in getAllSections: " . $e->getMessage());
+        return [];
+    }
 }
 ?>

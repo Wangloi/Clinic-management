@@ -1,5 +1,30 @@
-<?php include 'user-role.php'; ?>
-<?php include 'verifyer.php'; ?>
+<?php
+include 'user-role.php';
+include 'verifyer.php';
+include 'students_data.php';
+
+
+// Get filters from query parameters
+$filters = [
+    'search' => $_GET['search'] ?? '',
+    'sort' => $_GET['sort'] ?? 'name-asc',
+    'department' => $_GET['department'] ?? ''
+];
+
+// Pagination settings
+$current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$rows_per_page = isset($_GET['rows']) ? max(1, intval($_GET['rows'])) : 10;
+$offset = ($current_page - 1) * $rows_per_page;
+
+// Get data
+$total_students = getTotalStudentsCount($filters);
+$students = getAllStudents($filters, $rows_per_page, $offset);
+$total_pages = ceil($total_students / $rows_per_page);
+
+// Get programs and sections for dropdowns
+$programs = getAllPrograms();
+$sections = getAllSections();
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,6 +33,7 @@
         <title>Admin| Integrated Digital Clinic Management System of St. Rita's College of Balingasag</title>
         <link rel="stylesheet" href="admin.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="modal.css">
     </head>
 
     <body>
@@ -76,26 +102,6 @@
 
             <div class="main-context flex-1 h-screen overflow-auto">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Students</h2>
-                <?php
-                include 'students_data.php';
-
-                // Get filters from query parameters
-                $filters = [
-                    'search' => $_GET['search'] ?? '',
-                    'sort' => $_GET['sort'] ?? 'name-asc',
-                    'department' => $_GET['department'] ?? ''
-                ];
-
-                // Pagination settings
-                $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-                $rows_per_page = isset($_GET['rows']) ? max(1, intval($_GET['rows'])) : 10;
-                $offset = ($current_page - 1) * $rows_per_page;
-
-                // Get data
-                $total_students = getTotalStudentsCount($filters);
-                $students = getAllStudents($filters, $rows_per_page, $offset);
-                $total_pages = ceil($total_students / $rows_per_page);
-                ?>
 
                 <div class="student-info" style="width: 1145px; min-height: 500px; background-color: #ffffff; margin: 0 auto; border-radius: 25px; padding: 20px;">
                     <div class="container mx-auto px-4 py-8">
@@ -111,13 +117,13 @@
                                         value="<?php echo htmlspecialchars($filters['search']); ?>"
                                         class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-40"
                                     >
-                                    <select name="sort" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <select name="sort" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="this.form.submit()">
                                         <option value="name-asc" <?php echo $filters['sort'] === 'name-asc' ? 'selected' : ''; ?>>Name A-Z</option>
                                         <option value="name-desc" <?php echo $filters['sort'] === 'name-desc' ? 'selected' : ''; ?>>Name Z-A</option>
-                                        <option value="id-asc" <?php echo $filters['sort'] === 'id-asc' ? 'selected' : ''; ?>>ID Ascending</option>
-                                        <option value="id-desc" <?php echo $filters['sort'] === 'id-desc' ? 'selected' : ''; ?>>ID Descending</option>
+                                        <option value="visits-asc" <?php echo $filters['sort'] === 'visits-asc' ? 'selected' : ''; ?>>Total Visits Ascending</option>
+                                        <option value="visits-desc" <?php echo $filters['sort'] === 'visits-desc' ? 'selected' : ''; ?>>Total Visits Descending</option>
                                     </select>
-                                    <select name="department" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <select name="department" class="text-[12px] md:text-[14px] px-2 py-1 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500" onchange="this.form.submit()">
                                         <option value="">All Departments</option>
                                         <option value="College" <?php echo $filters['department'] === 'College' ? 'selected' : ''; ?>>College</option>
                                         <option value="SHS" <?php echo $filters['department'] === 'SHS' ? 'selected' : ''; ?>>Senior High</option>
@@ -131,10 +137,10 @@
                                         <option value="50" <?php echo $rows_per_page == 50 ? 'selected' : ''; ?>>50 rows</option>
                                         <option value="100" <?php echo $rows_per_page == 100 ? 'selected' : ''; ?>>100 rows</option>
                                     </select>
-                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Apply</button>
-                                    <button type="button" onclick="clearFilters()" class="bg-gray-500 text-white px-3 py-1 rounded text-sm">Clear</button>
+
+
                                 </form>
-                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm" onclick="openAddStudentModal()">
                                     Add New Student
                                 </button>
                             </div>
@@ -207,17 +213,17 @@
                                                 <!-- Actions -->
                                                 <td class="px-4 py-3 whitespace-nowrap text-center">
                                                     <div class="flex justify-center space-x-2">
-                                                        <button class="text-blue-600 hover:text-blue-900" title="Edit">
+                                                        <button class="text-blue-600 hover:text-blue-900" title="Edit" onclick="openEditModal(<?php echo htmlspecialchars(json_encode($student)); ?>)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                                             </svg>
                                                         </button>
-                                                        <button class="text-red-600 hover:text-red-900" title="Delete">
+                                                        <button class="text-red-600 hover:text-red-900" title="Delete" onclick="openDeleteModal(<?php echo $student['student_id']; ?>, '<?php echo htmlspecialchars(getStudentFullName($student)); ?>')">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                                                             </svg>
                                                         </button>
-                                                        <button class="text-green-600 hover:text-green-900" title="View Details">
+                                                        <button class="text-green-600 hover:text-green-900" title="View Details" onclick="viewStudentDetails(<?php echo $student['student_id']; ?>)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                                                             </svg>
@@ -288,37 +294,204 @@
                     </div>
                 </div>
 
+                <!-- Edit Student Modal -->
+                <div id="editStudentModal" class="fixed inset-0 flex items-center justify-center z-[9999] hidden backdrop-blur-sm">
+                    <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto relative">
+                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="text-xl font-semibold text-gray-800">Edit Student Information</h3>
+                            <span class="text-gray-400 hover:text-gray-600 cursor-pointer text-2xl" onclick="closeModal('editStudentModal')">&times;</span>
+                        </div>
+
+                        <div class="px-6 py-4">
+                            <form id="editStudentForm" method="POST" action="update_student.php">
+                                <input type="hidden" name="student_id" id="edit_student_id">
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_first_name">First Name</label>
+                                        <input type="text" id="edit_first_name" name="first_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_middle_name">Middle Name</label>
+                                        <input type="text" id="edit_middle_name" name="middle_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_last_name">Last Name</label>
+                                        <input type="text" id="edit_last_name" name="last_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_student_id_display">Student ID</label>
+                                        <input type="text" id="edit_student_id_display" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_program">Program</label>
+                                        <input type="text" id="edit_program" name="program" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_section">Section</label>
+                                        <input type="text" id="edit_section" name="section" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_department">Department</label>
+                                    <select id="edit_department" name="department" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="College">College</option>
+                                        <option value="SHS">Senior High School</option>
+                                        <option value="JHS">Junior High School</option>
+                                        <option value="Grade School">Grade School</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                            <button type="button" onclick="closeModal('editStudentModal')" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit" form="editStudentForm" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Confirmation Modal -->
+                <div id="deleteStudentModal" class="fixed inset-0 flex items-center justify-center z-[9999] hidden backdrop-blur-sm bg-transparent">
+                    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto relative">
+                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="text-xl font-semibold text-gray-800">Confirm Deletion</h3>
+                            <span class="text-gray-400 hover:text-gray-600 cursor-pointer text-2xl" onclick="closeModal('deleteStudentModal')">&times;</span>
+                        </div>
+
+                        <div class="px-6 py-6">
+                            <p class="text-gray-700 mb-4">Are you sure you want to delete student: <strong id="delete_student_name" class="text-gray-900"></strong>?</p>
+                            <p class="text-red-500 text-sm">This action cannot be undone.</p>
+                        </div>
+
+                        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                            <button type="button" onclick="closeModal('deleteStudentModal')" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                                Cancel
+                            </button>
+                            <button type="button" onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                                Delete Student
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Student Modal -->
+                <div id="addStudentModal" class="fixed inset-0 flex items-center justify-center z-[9999] hidden backdrop-blur-sm">
+                    <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto relative z-[10000] pointer-events-auto">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800">Add New Student</h3>
+                            <span class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer text-2xl" onclick="closeModal('addStudentModal')">&times;</span>
+                        </div>
+
+                        <div class="px-6 py-4">
+                            <form id="addStudentForm" method="POST" action="add_student.php">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="add_first_name">First Name</label>
+                                        <input type="text" id="add_first_name" name="first_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="add_middle_name">Middle Name</label>
+                                        <input type="text" id="add_middle_name" name="middle_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="add_last_name">Last Name</label>
+                                        <input type="text" id="add_last_name" name="last_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="add_student_id">Student ID</label>
+                                        <input type="text" id="add_student_id" name="student_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="add_contact_number">Contact Number</label>
+                                    <input type="tel" id="add_contact_number" name="contact_number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., 09123456789" pattern="[0-9]+" title="Please enter only numbers" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="add_department">Department</label>
+                                        <select id="add_department" name="department" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="loadPrograms()">
+                                            <option value="">Select Department</option>
+                                            <option value="College">College</option>
+                                            <option value="SHS">Senior High School</option>
+                                            <option value="JHS">Junior High School</option>
+                                            <option value="Grade School">Grade School</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1" for="add_program">Program</label>
+                                        <select id="add_program" name="program" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required onchange="loadSections()">
+                                            <option value="">Select Program</option>
+                                            <?php foreach ($programs as $program): ?>
+                                                <option value="<?php echo $program['program_id']; ?>">
+                                                    <?php echo htmlspecialchars($program['program_name']); ?> (<?php echo htmlspecialchars($program['department_level']); ?>)
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1" for="add_section">Section</label>
+                                    <select id="add_section" name="section" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                        <option value="">Select Section</option>
+                                        <?php foreach ($sections as $section): ?>
+                                            <option value="<?php echo $section['section_id']; ?>">
+                                                <?php echo htmlspecialchars($section['section_name']); ?> (<?php echo htmlspecialchars($section['program_name']); ?>)
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                            <button type="button" onclick="closeModal('addStudentModal')" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                                Cancel
+                            </button>
+                            <button type="button" onclick="submitAddStudentForm()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                                Add Student
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <script>
-                function goToPage(page) {
-                    const url = new URL(window.location);
-                    url.searchParams.set('page', page);
-                    window.location = url.toString();
-                }
+                    // Make programs data available to JavaScript
+                    const allPrograms = <?php echo json_encode($programs); ?>;
+                    const allSections = <?php echo json_encode($sections); ?>;
 
-                function clearFilters() {
-                    window.location = window.location.pathname;
-                }
-
-                // Preserve rows per page selection when changing pages
-                document.addEventListener('DOMContentLoaded', function() {
-                    const forms = document.querySelectorAll('form');
-                    forms.forEach(form => {
-                        form.addEventListener('submit', function() {
-                            const rowsSelect = this.querySelector('select[name="rows"]');
-                            if (rowsSelect) {
-                                const hiddenInput = document.createElement('input');
-                                hiddenInput.type = 'hidden';
-                                hiddenInput.name = 'rows';
-                                hiddenInput.value = rowsSelect.value;
-                                this.appendChild(hiddenInput);
-                            }
-                        });
+                    // Initialize programs when page loads
+                    document.addEventListener('DOMContentLoaded', function() {
+                        loadPrograms();
                     });
-                });
                 </script>
-
-    <script src="mobile-nav.js"></script>
-    <script src="searchbar.js"></script>
-    <script src="filterbar.js"></script>
+                <script src="mobile-nav.js"></script>
+                <script src="searchbar.js"></script>
+                <script src="filterbar.js"></script>
+                <script src="modal.js"></script>
+                <script src="students-management.js"></script>
     </body>
 </html>
