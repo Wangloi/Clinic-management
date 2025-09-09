@@ -54,7 +54,7 @@ function openDeleteModal(medicineId, medicineName) {
 
 function viewMedicineDetails(medicineId) {
     // In a real application, you would redirect to a medicine details page or open a details modal
-    alert(`Viewing details for medicine ID: ${medicineId}`);
+    modalManager.showErrorMessage(`Viewing details for medicine ID: ${medicineId} - Feature coming soon!`);
 }
 
 function submitEditMedicineForm() {

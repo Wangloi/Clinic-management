@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Log the logout action before destroying session
+if (isset($_SESSION['logged_in'])) {
+    include 'logging.php';
+    logAdminAction('logout', 'User logged out of the system');
+}
+
 // Unset all session variables
 $_SESSION = array();
 

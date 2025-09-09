@@ -39,6 +39,11 @@ try {
     $stmt->execute([$name, $description, $quantity, $unit, $expiration_date]);
 
     if ($stmt->rowCount() > 0) {
+        // Log the action
+        include 'logging.php';
+        $medicine_id = $pdo->lastInsertId();
+        logAdminAction('add', "Added medicine: $name (Quantity: $quantity $unit)");
+
         echo json_encode(['success' => true, 'message' => 'Medicine added successfully']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to add medicine']);

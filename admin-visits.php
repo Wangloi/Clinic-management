@@ -150,13 +150,13 @@
                                                 Grade Level
                                             </th>
                                             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Section
-                                            </th>
-                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Reason
                                             </th>
                                             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Treatment
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Dispensed Medications
                                             </th>
                                             <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Actions
@@ -179,13 +179,13 @@
                                                     <?php echo htmlspecialchars(getPatientInfo($visit)); ?>
                                                 </td>
                                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
-                                                    <?php echo htmlspecialchars($visit['section_name'] ?? 'N/A'); ?>
-                                                </td>
-                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
                                                     <?php echo htmlspecialchars($visit['reason']); ?>
                                                 </td>
                                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
                                                     <?php echo htmlspecialchars($visit['treatment']); ?>
+                                                </td>
+                                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                    None
                                                 </td>
                                                 <td class="px-4 py-3 whitespace-nowrap text-center">
                                                     <div class="flex justify-center space-x-2">
@@ -202,6 +202,11 @@
                                                         <button class="text-green-600 hover:text-green-900" title="View Details" onclick="handleVisitAction('view', <?php echo $visit['visit_id']; ?>)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                        <button class="text-purple-600 hover:text-purple-900" title="Dispense Medication" onclick="openDispenseModal(<?php echo $visit['visit_id']; ?>)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M10 2L3 7v11a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V7l-7-5z" clip-rule="evenodd" />
                                                             </svg>
                                                         </button>
                                                     </div>
@@ -276,7 +281,8 @@
         <script src="mobile-nav.js"></script>
         <script src="modal.js"></script>
         <script src="visits.js"></script>
-        <?php include 'edit-visit-modal.html'; ?>
+        <script src="medication-dispensing.js"></script>
+        <?php include 'edit-visit-modal-updated.html'; ?>
         <?php include 'add-visit-modal.html'; ?>
     </body>
 </html>

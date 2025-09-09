@@ -248,7 +248,7 @@ $total_medicines = count($medicines);
                 <button type="button" onclick="closeModal('addMedicineModal')" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
                     Cancel
                 </button>
-                <button type="button" onclick="submitAddMedicineForm()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                <button type="submit" form="addMedicineForm" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                     Add Medicine
                 </button>
             </div>

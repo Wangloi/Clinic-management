@@ -333,18 +333,33 @@ $sections = getAllSections();
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_program">Program</label>
-                                        <input type="text" id="edit_program" name="program" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select id="edit_program" name="program" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required onchange="loadSections()">
+                                            <option value="">Select Program</option>
+                                            <?php foreach ($programs as $program): ?>
+                                                <option value="<?php echo $program['program_id']; ?>">
+                                                    <?php echo htmlspecialchars($program['program_name']); ?> (<?php echo htmlspecialchars($program['department_level']); ?>)
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
 
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_section">Section</label>
-                                        <input type="text" id="edit_section" name="section" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select id="edit_section" name="section" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                            <option value="">Select Section</option>
+                                            <?php foreach ($sections as $section): ?>
+                                                <option value="<?php echo $section['section_id']; ?>">
+                                                    <?php echo htmlspecialchars($section['section_name']); ?> (<?php echo htmlspecialchars($section['program_name']); ?>)
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1" for="edit_department">Department</label>
-                                    <select id="edit_department" name="department" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <select id="edit_department" name="department" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="loadPrograms()">
+                                        <option value="">Select Department</option>
                                         <option value="College">College</option>
                                         <option value="SHS">Senior High School</option>
                                         <option value="JHS">Junior High School</option>
@@ -471,7 +486,7 @@ $sections = getAllSections();
                             <button type="button" onclick="closeModal('addStudentModal')" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
                                 Cancel
                             </button>
-                            <button type="button" onclick="submitAddStudentForm()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                            <button type="submit" form="addStudentForm" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                                 Add Student
                             </button>
                         </div>

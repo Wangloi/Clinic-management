@@ -4,10 +4,10 @@ function getAllMedicines($search = '') {
 
     try {
         if (!empty($search)) {
-            $stmt = $pdo->prepare("SELECT medicine_id, medicine_name, description, quantity, unit, expiration_date FROM Medicine_Inventory WHERE medicine_name LIKE ? OR description LIKE ? ORDER BY created_at DESC");
+            $stmt = $pdo->prepare("SELECT medicine_id, medicine_name, description, stock_quantity FROM Medicine_Inventory WHERE medicine_name LIKE ? OR description LIKE ? ORDER BY created_at DESC");
             $stmt->execute(["%$search%", "%$search%"]);
         } else {
-            $stmt = $pdo->prepare("SELECT medicine_id, medicine_name, description, quantity, unit, expiration_date FROM Medicine_Inventory ORDER BY medicine_name ASC");
+            $stmt = $pdo->prepare("SELECT medicine_id, medicine_name, description, stock_quantity FROM Medicine_Inventory ORDER BY medicine_name ASC");
             $stmt->execute();
         }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

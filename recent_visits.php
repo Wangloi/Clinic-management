@@ -91,4 +91,44 @@ function getPatientInfo($visit) {
         return 'Visitor';
     }
 }
+
+function getVisitDistributionByGrade() {
+    include 'connection.php';
+    try {
+        $stmt = $pdo->prepare("
+            SELECT
+                CASE
+                    WHEN cv.patient_type = 'Staff' THEN 'Staff'
+                    WHEN cv.patient_type = 'Visitor' THEN 'Visitor'
+                    WHEN d.department_level IS NULL OR d.department_level = '' THEN 'Grade School'
+                    ELSE d.department_level
+                END as department_level,
+                COUNT(cv.visit_id) as visit_count
+            FROM Clinic_Visits cv
+            LEFT JOIN Students s ON cv.patient_type = 'Student' AND cv.patient_id = s.student_id
+            LEFT JOIN Sections sec ON s.section_id = sec.section_id
+            LEFT JOIN Programs p ON sec.program_id = p.program_id
+            LEFT JOIN Departments d ON p.department_id = d.department_id
+            GROUP BY
+                CASE
+                    WHEN cv.patient_type = 'Staff' THEN 'Staff'
+                    WHEN cv.patient_type = 'Visitor' THEN 'Visitor'
+                    WHEN d.department_level IS NULL OR d.department_level = '' THEN 'Grade School'
+                    ELSE d.department_level
+                END
+            ORDER BY
+                CASE
+                    WHEN cv.patient_type = 'Staff' THEN 'Staff'
+                    WHEN cv.patient_type = 'Visitor' THEN 'Visitor'
+                    WHEN d.department_level IS NULL OR d.department_level = '' THEN 'Grade School'
+                    ELSE d.department_level
+                END
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error in getVisitDistributionByGrade: " . $e->getMessage());
+        return [];
+    }
+}
 ?>

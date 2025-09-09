@@ -28,6 +28,11 @@ try {
     $stmt->execute([$patient_type, $patient_id, $reason, $diagnosis, $treatment, $remarks]);
 
     if ($stmt->rowCount() > 0) {
+        // Log the action
+        include 'logging.php';
+        $visit_id = $pdo->lastInsertId();
+        logAdminAction('add', "Added visit for $patient_type ID: $patient_id - Reason: $reason");
+
         echo json_encode(['success' => true, 'message' => 'Visit added successfully']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to add visit']);

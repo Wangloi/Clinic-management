@@ -52,7 +52,6 @@
                             <img src="images/appointments.png" alt="Appointments icon" class="w-5 h-5">
                             <span class="font-medium">Appointments</span>
                         </a>
-
                         <!-- Reports -->
                         <a href="admin-reports.php" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200">
                             <img src="images/reports.png" alt="Reports icon" class="w-5 h-5">
@@ -77,7 +76,7 @@
             <div class="main-context flex-1 h-screen overflow-auto">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 pb-2 pt-[38px] pl-[60px]">Reports</h2>
                 <div class="Recent">
-                    <a href="https://meet.google.com/vqu-fibe-spx">GOG</a>
+
                 </div>
             </div>
     

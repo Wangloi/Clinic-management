@@ -18,4 +18,9 @@ if (basename($_SERVER['PHP_SELF']) === 'admin-dashboard.php' && $_SESSION['is_su
     header("Location: superadmin-dashboard.php");
     exit();
 }
+
+// Function to check if current user is superadmin
+function isSuperAdmin() {
+    return isset($_SESSION['is_superadmin']) && $_SESSION['is_superadmin'] === true;
+}
 ?>

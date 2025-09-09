@@ -65,15 +65,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_type'] = $userType;
             $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
             $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-            
+
             // Update last login timestamp
             $updateTable = ($userType === 'head') ? 'Head_Staff' : 'Clinic_Staff';
             $idField = ($userType === 'head') ? 'head_id' : 'staff_id';
-            
+
             $updateStmt = $pdo->prepare("UPDATE $updateTable SET last_login = NOW() WHERE $idField = :id");
             $updateStmt->bindParam(':id', $user['id'], PDO::PARAM_INT);
             $updateStmt->execute();
-            
+
+            // Log the login action
+            include 'logging.php';
+            logAdminAction('login', 'User logged into the system');
+
             // Redirect based on admin type
             $redirect = $_SESSION['is_superadmin'] ? 'superadmin-dashboard.php' : 'admin-dashboard.php';
             header("Location: $redirect");

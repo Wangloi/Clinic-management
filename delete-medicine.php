@@ -33,6 +33,10 @@ try {
     $stmt->execute([$medicine_id]);
 
     if ($stmt->rowCount() > 0) {
+        // Log the action
+        include 'logging.php';
+        logAdminAction('delete', "Deleted medicine ID: $medicine_id");
+
         echo json_encode(['success' => true, 'message' => 'Medicine deleted successfully']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to delete medicine']);

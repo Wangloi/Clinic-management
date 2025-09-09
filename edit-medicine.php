@@ -55,6 +55,10 @@ try {
     $stmt->execute([$medicine_name, $description, $quantity, $unit, $batch_no, $expiration_date, $medicine_id]);
 
     if ($stmt->rowCount() > 0) {
+        // Log the action
+        include 'logging.php';
+        logAdminAction('edit', "Updated medicine: $medicine_name (ID: $medicine_id)");
+
         echo json_encode(['success' => true, 'message' => 'Medicine updated successfully']);
     } else {
         echo json_encode(['success' => false, 'message' => 'No changes made to medicine']);

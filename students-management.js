@@ -1,14 +1,35 @@
 // Use centralized modal system
 function openEditModal(student) {
+    // Find program_id from program_name
+    let programId = '';
+    if (student.program_name && typeof allPrograms !== 'undefined') {
+        const program = allPrograms.find(p => p.program_name === student.program_name);
+        if (program) {
+            programId = program.program_id;
+        }
+    }
+
     modalManager.populateForm('editStudentForm', {
         student_id: student.student_id,
         first_name: student.Student_Fname || '',
         middle_name: student.Student_Mname || '',
         last_name: student.Student_Lname || '',
-        program: student.program_name || '',
-        section: student.section_name || '',
+        program: programId,
+        section: student.section_id || '',
         department: student.department_level || ''
     });
+
+    // Set the display input for student_id
+    const displayInput = document.getElementById('edit_student_id_display');
+    if (displayInput) {
+        displayInput.value = student.student_id || '';
+    }
+
+    // Load sections for the selected program
+    if (programId) {
+        loadSections(student.section_id);
+    }
+
     modalManager.openModal('editStudentModal');
 }
 
@@ -25,33 +46,71 @@ function openAddStudentModal() {
 
 function submitAddStudentForm() {
     const form = document.getElementById('addStudentForm');
-    if (form) {
-        // Trigger the form's submit event, which will be handled by the existing event listener
-        form.dispatchEvent(new Event('submit'));
-    }
+    const formData = new FormData(form);
+    const submitBtn = document.querySelector('#addStudentModal button[type="button"]:not(.text-gray-600)');
+
+    // Show loading state
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="loading-spinner"></span> Adding...';
+
+    fetch(form.action, {
+        method: form.method,
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            modalManager.showSuccessMessage(data.message || 'Student added successfully');
+            closeModal('addStudentModal');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            modalManager.showErrorMessage(data.message || 'Failed to add student');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        modalManager.showErrorMessage('Network error. Please try again.');
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    });
 }
 
 // Confirm delete action
 function confirmDelete() {
     const studentId = document.getElementById('deleteStudentModal').dataset.studentId;
-    
-    // In a real application, you would submit a form or make an AJAX request here
-    alert(`Student with ID ${studentId} would be deleted in a real application.`);
-    
-    // Close the modal
-    modalManager.closeModal('deleteStudentModal');
-    
-    // Show success message
-    alert('Student deleted successfully!');
-    
-    // In a real application, you might want to reload the page or update the table
-    // window.location.reload();
+
+    // Send AJAX request to delete the student
+    const formData = new FormData();
+    formData.append('student_id', studentId);
+
+    fetch('delete_student.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            modalManager.showSuccessMessage(data.message || 'Student deleted successfully!');
+            modalManager.closeModal('deleteStudentModal');
+            // Reload the page to show the updated list
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            modalManager.showErrorMessage(data.message || 'Failed to delete student');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        modalManager.showErrorMessage('Network error. Please try again.');
+    });
 }
 
 // View student details
 function viewStudentDetails(studentId) {
     // In a real application, you would redirect to a student details page
-    alert(`Viewing details for student ID: ${studentId}`);
+    modalManager.showErrorMessage(`Viewing details for student ID: ${studentId} - Feature coming soon!`);
 }
 
 // Pagination functions
@@ -86,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (editForm) {
         editForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            handleFormSubmit(this, 'Student updated successfully!');
+            modalManager.handleFormSubmit(this);
         });
     }
 
@@ -94,40 +153,50 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addForm) {
         addForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            handleFormSubmit(this, 'Student added successfully!');
+            modalManager.handleFormSubmit(this);
         });
     }
 
-    // Add event listener for program change to load sections
-    const programSelect = document.getElementById('add_program');
-    if (programSelect) {
-        programSelect.addEventListener('change', loadSections);
+    // Add event listeners for program change to load sections
+    const addProgramSelect = document.getElementById('add_program');
+    if (addProgramSelect) {
+        addProgramSelect.addEventListener('change', loadSections);
+    }
+    const editProgramSelect = document.getElementById('edit_program');
+    if (editProgramSelect) {
+        editProgramSelect.addEventListener('change', function() {
+            const currentSection = document.getElementById('edit_section').value;
+            loadSections(currentSection);
+        });
+    }
+
+    // Add event listeners for department change to load programs
+    const addDepartmentSelect = document.getElementById('add_department');
+    if (addDepartmentSelect) {
+        addDepartmentSelect.addEventListener('change', loadPrograms);
+    }
+    const editDepartmentSelect = document.getElementById('edit_department');
+    if (editDepartmentSelect) {
+        editDepartmentSelect.addEventListener('change', function() {
+            loadPrograms();
+        });
     }
 });
 
-// Handle form submissions with AJAX
-function handleFormSubmit(form, successMessage) {
-    const formData = new FormData(form);
 
-    // In a real application, you would use fetch or XMLHttpRequest
-    // to submit the form data asynchronously
-
-    // Simulate AJAX request
-    setTimeout(() => {
-        alert(successMessage);
-        const modalId = form.closest('.modal').id;
-        modalManager.closeModal(modalId);
-
-        // In a real application, you might want to reload the page or update the table
-        // window.location.reload();
-    }, 1000);
-}
 
 // Load programs based on selected department
 function loadPrograms() {
-    const departmentSelect = document.getElementById('add_department');
-    const programSelect = document.getElementById('add_program');
-    const sectionSelect = document.getElementById('add_section');
+    let departmentSelect = document.getElementById('add_department');
+    let programSelect = document.getElementById('add_program');
+    let sectionSelect = document.getElementById('add_section');
+
+    // If add elements not found, try edit elements
+    if (!departmentSelect) {
+        departmentSelect = document.getElementById('edit_department');
+        programSelect = document.getElementById('edit_program');
+        sectionSelect = document.getElementById('edit_section');
+    }
 
     const selectedDepartment = departmentSelect.value;
 
@@ -159,9 +228,17 @@ function loadPrograms() {
 }
 
 // Load sections based on selected program
-function loadSections() {
+function loadSections(selectedSectionId = null) {
     const programSelect = document.getElementById('add_program');
     const sectionSelect = document.getElementById('add_section');
+
+    // For edit modal, if programSelect is not found, try edit_program
+    if (!programSelect) {
+        programSelect = document.getElementById('edit_program');
+    }
+    if (!sectionSelect) {
+        sectionSelect = document.getElementById('edit_section');
+    }
 
     const selectedProgramId = programSelect.value;
 
@@ -181,6 +258,11 @@ function loadSections() {
             option.textContent = section.section_name;
             sectionSelect.appendChild(option);
         });
+
+        // If a selectedSectionId is provided and exists in the new options, set it as selected
+        if (selectedSectionId && filteredSections.some(section => section.section_id == selectedSectionId)) {
+            sectionSelect.value = selectedSectionId;
+        }
     }
 }
 
