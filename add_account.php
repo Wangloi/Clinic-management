@@ -17,8 +17,10 @@ try {
 
     // Get and validate form data
     $first_name = trim($_POST['first_name'] ?? '');
+    $middle_name = trim($_POST['middle_name'] ?? '');
     $last_name = trim($_POST['last_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
+    $contact_number = trim($_POST['contact_number'] ?? '');
     $role = trim($_POST['role'] ?? '');
     $password = $_POST['password'] ?? '';
 
@@ -58,28 +60,45 @@ try {
         $table = 'Clinic_Staff';
         $email_field = 'clinic_email';
         $fname_field = 'clinic_Fname';
+        $mname_field = 'clinic_Mname';
         $lname_field = 'clinic_Lname';
+        $contact_field = 'contact_number';
         $pass_field = 'clinic_password';
+
+        $insert_stmt = $pdo->prepare("
+            INSERT INTO $table ($email_field, $fname_field, $mname_field, $lname_field, $contact_field, $pass_field)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+
+        $success = $insert_stmt->execute([
+            $email,
+            $first_name,
+            $middle_name,
+            $last_name,
+            $contact_number,
+            $hashed_password
+        ]);
     } else {
         $table = 'Head_Staff';
         $email_field = 'head_email';
         $fname_field = 'head_Fname';
+        $mname_field = 'head_Mname';
         $lname_field = 'head_Lname';
         $pass_field = 'head_password';
+
+        $insert_stmt = $pdo->prepare("
+            INSERT INTO $table ($email_field, $fname_field, $mname_field, $lname_field, $pass_field)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+
+        $success = $insert_stmt->execute([
+            $email,
+            $first_name,
+            $middle_name,
+            $last_name,
+            $hashed_password
+        ]);
     }
-
-    // Insert new account
-    $insert_stmt = $pdo->prepare("
-        INSERT INTO $table ($email_field, $fname_field, $lname_field, $pass_field)
-        VALUES (?, ?, ?, ?)
-    ");
-
-    $success = $insert_stmt->execute([
-        $email,
-        $first_name,
-        $last_name,
-        $hashed_password
-    ]);
 
     if (!$success) {
         throw new Exception('Failed to add account to database');
