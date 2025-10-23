@@ -33,10 +33,60 @@ function openEditModal(student) {
     modalManager.openModal('editStudentModal');
 }
 
-function openDeleteModal(studentId, studentName) {
-    document.getElementById('delete_student_name').textContent = studentName;
-    document.getElementById('deleteStudentModal').dataset.studentId = studentId;
-    modalManager.openModal('deleteStudentModal');
+function deleteStudent(studentId, studentName) {
+    // Confirm deletion with user
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to delete student: ${studentName}. This action cannot be undone!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log('Deleting student:', studentId);
+
+            // Send delete request to server
+            const formData = new FormData();
+            formData.append('student_id', studentId);
+
+            fetch('delete_student.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: data.message || 'Student deleted successfully!',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message || 'Failed to delete student',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Network error. Please try again.',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+    });
 }
 
 function openAddStudentModal() {
@@ -78,39 +128,242 @@ function submitAddStudentForm() {
     });
 }
 
-// Confirm delete action
-function confirmDelete() {
-    const studentId = document.getElementById('deleteStudentModal').dataset.studentId;
-
-    // Send AJAX request to delete the student
-    const formData = new FormData();
-    formData.append('student_id', studentId);
-
-    fetch('delete_student.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            modalManager.showSuccessMessage(data.message || 'Student deleted successfully!');
-            modalManager.closeModal('deleteStudentModal');
-            // Reload the page to show the updated list
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            modalManager.showErrorMessage(data.message || 'Failed to delete student');
+// Close all modals to prevent layering issues
+function closeAllModals() {
+    const modals = [
+        'editStudentModal',
+        'addStudentModal', 
+        'studentDetailsModal'
+    ];
+    
+    modals.forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('hidden');
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        modalManager.showErrorMessage('Network error. Please try again.');
+    });
+    
+    // Remove any backdrop blur from body
+    document.body.style.overflow = 'auto';
+}
+
+// Enhanced modal close function
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Add keyboard event listener for Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeAllModals();
+    }
+});
+
+// Add click outside modal to close
+document.addEventListener('click', function(event) {
+    const modals = document.querySelectorAll('[id$="Modal"]');
+    modals.forEach(modal => {
+        if (!modal.classList.contains('hidden') && event.target === modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    });
+});
+
+// View student details with health records
+async function viewStudentDetails(studentId) {
+    try {
+        // Close any other open modals first
+        closeAllModals();
+        
+        // Show the modal and loading state
+        const modal = document.getElementById('studentDetailsModal');
+        const loading = document.getElementById('studentDetailsLoading');
+        const content = document.getElementById('studentDetailsContent');
+        
+        modal.classList.remove('hidden');
+        loading.classList.remove('hidden');
+        content.classList.add('hidden');
+        
+        // Fetch student data and health records
+        const response = await fetch(`admin-health-records-api.php?action=get_student_health_record&student_id=${studentId}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+            throw new Error(data.message || 'Failed to load student details');
+        }
+        
+        // Populate student information
+        const student = data.student;
+        document.getElementById('studentFullName').textContent = student.name || 'N/A';
+        document.getElementById('studentIdDisplay').textContent = student.id || 'N/A';
+        document.getElementById('studentContact').textContent = student.contact_number || 'N/A';
+        document.getElementById('studentSection').textContent = student.section_name || 'N/A';
+        document.getElementById('studentProgram').textContent = student.program_name || 'N/A';
+        document.getElementById('studentDepartment').textContent = getDepartmentDisplayName(student.department_level) || 'N/A';
+        
+        // Handle health records
+        const healthRecord = data.health_record;
+        const noHealthRecord = document.getElementById('noHealthRecord');
+        const healthRecordContent = document.getElementById('healthRecordContent');
+        
+        if (!healthRecord.exists) {
+            // Show no health record state
+            noHealthRecord.classList.remove('hidden');
+            healthRecordContent.classList.add('hidden');
+        } else {
+            // Show health record content
+            noHealthRecord.classList.add('hidden');
+            healthRecordContent.classList.remove('hidden');
+            
+            // Populate health information
+            document.getElementById('healthSex').textContent = healthRecord.student_sex || 'N/A';
+            document.getElementById('healthBirthday').textContent = formatDate(healthRecord.student_birthday) || 'N/A';
+            document.getElementById('healthAge').textContent = healthRecord.student_age || 'N/A';
+            document.getElementById('healthEducationLevel').textContent = healthRecord.education_level || 'N/A';
+            document.getElementById('healthAddress').textContent = healthRecord.home_address || 'N/A';
+            
+            // Vital signs
+            document.getElementById('healthHeight').textContent = healthRecord.height ? `${healthRecord.height} cm` : 'N/A';
+            document.getElementById('healthWeight').textContent = healthRecord.weight ? `${healthRecord.weight} kg` : 'N/A';
+            document.getElementById('healthBP').textContent = healthRecord.blood_pressure || 'N/A';
+            document.getElementById('healthHR').textContent = healthRecord.heart_rate ? `${healthRecord.heart_rate} bpm` : 'N/A';
+            document.getElementById('healthTemp').textContent = healthRecord.temperature ? `${healthRecord.temperature}°C` : 'N/A';
+            
+            // Health conditions
+            const allergiesInfo = document.getElementById('allergiesInfo');
+            const asthmaInfo = document.getElementById('asthmaInfo');
+            const healthProblemsInfo = document.getElementById('healthProblemsInfo');
+            const noHealthConditions = document.getElementById('noHealthConditions');
+            
+            console.log('Health record data:', healthRecord);
+            console.log('Checking health conditions...');
+            
+            let hasConditions = false;
+            
+            // Check allergies
+            if (healthRecord.has_allergies === 'YES' || healthRecord.has_allergies === 'yes' || healthRecord.has_allergies === '1') {
+                allergiesInfo.classList.remove('hidden');
+                document.getElementById('allergiesRemarks').textContent = healthRecord.allergies_remarks || 'No details provided';
+                hasConditions = true;
+            } else {
+                allergiesInfo.classList.add('hidden');
+            }
+            
+            // Check asthma
+            if (healthRecord.has_asthma === 'YES' || healthRecord.has_asthma === 'yes' || healthRecord.has_asthma === '1') {
+                asthmaInfo.classList.remove('hidden');
+                document.getElementById('asthmaRemarks').textContent = healthRecord.asthma_remarks || 'No details provided';
+                hasConditions = true;
+            } else {
+                asthmaInfo.classList.add('hidden');
+            }
+            
+            // Check health problems (note: database field is has_healthproblem, not has_health_problems)
+            if (healthRecord.has_healthproblem === 'YES' || healthRecord.has_health_problems === 'YES' || 
+                healthRecord.has_healthproblem === 'yes' || healthRecord.has_health_problems === 'yes' || 
+                healthRecord.has_healthproblem === '1' || healthRecord.has_health_problems === '1') {
+                healthProblemsInfo.classList.remove('hidden');
+                document.getElementById('healthProblemsRemarks').textContent = 
+                    healthRecord.healthproblem_remarks || healthRecord.health_problems_remarks || 'No details provided';
+                hasConditions = true;
+            } else {
+                healthProblemsInfo.classList.add('hidden');
+            }
+            
+            // Check other health conditions
+            const otherConditions = [
+                'has_medicines', 'has_vaccines', 'has_foods', 'has_other', 'has_earinfection', 
+                'has_potty', 'has_uti', 'has_chickenpox', 'has_dengue', 'has_anemia', 
+                'has_gastritis', 'has_pneumonia', 'has_obesity', 'has_covid19', 'has_otherconditions'
+            ];
+            
+            otherConditions.forEach(condition => {
+                if (healthRecord[condition] === 'YES' || healthRecord[condition] === 'yes' || healthRecord[condition] === '1') {
+                    hasConditions = true;
+                }
+            });
+            
+            // Show/hide no conditions message
+            console.log('Has conditions:', hasConditions);
+            if (hasConditions) {
+                noHealthConditions.classList.add('hidden');
+                console.log('Hiding "no conditions" message');
+            } else {
+                noHealthConditions.classList.remove('hidden');
+                console.log('Showing "no conditions" message');
+            }
+            
+            // Medications and notes
+            document.getElementById('healthMedications').textContent = healthRecord.current_medications_vitamins || 'None reported';
+            document.getElementById('healthNotes').textContent = healthRecord.additional_notes || 'No additional notes';
+            
+            // Record information
+            document.getElementById('healthSubmitted').textContent = formatDateTime(healthRecord.submitted_at) || 'N/A';
+            document.getElementById('healthStatus').textContent = healthRecord.submitted_at ? 'Completed' : 'In Progress';
+        }
+        
+        // Hide loading and show content
+        loading.classList.add('hidden');
+        content.classList.remove('hidden');
+        
+    } catch (error) {
+        console.error('Error loading student details:', error);
+        modalManager.showErrorMessage('Failed to load student details: ' + error.message);
+        
+        // Hide the modal on error
+        const modal = document.getElementById('studentDetailsModal');
+        modal.classList.add('hidden');
+    }
+}
+
+// Helper function to get department display name (matches admin students table)
+function getDepartmentDisplayName(departmentLevel) {
+    switch (departmentLevel) {
+        case 'College':
+            return 'College';
+        case 'SHS':
+            return 'Senior High School';
+        case 'JHS':
+            return 'Junior High School';
+        case 'Grade School':
+            return 'Grade School';
+        default:
+            return 'N/A';
+    }
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     });
 }
 
-// View student details
-function viewStudentDetails(studentId) {
-    // In a real application, you would redirect to a student details page
-    modalManager.showErrorMessage(`Viewing details for student ID: ${studentId} - Feature coming soon!`);
+// Helper function to format date and time
+function formatDateTime(dateString) {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 }
 
 // Pagination functions

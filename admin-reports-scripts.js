@@ -286,3 +286,50 @@ function showNotification(message, type = 'info') {
         alert('Error: ' + message);
     }
 }
+
+// View Profile Modal Functions
+function openViewProfileModal() {
+    const modal = document.getElementById('viewProfileModal');
+    if (!modal) {
+        console.error('View profile modal not found');
+        return;
+    }
+
+    // Fetch user profile data
+    fetch('get_profile.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const nameEl = document.getElementById('viewProfileName');
+                const usernameEl = document.getElementById('viewProfileUsername');
+                const emailEl = document.getElementById('viewProfileEmail');
+                const roleEl = document.getElementById('viewProfileRole');
+                const createdEl = document.getElementById('viewProfileCreated');
+                const lastLoginEl = document.getElementById('viewProfileLastLogin');
+
+                if (nameEl) nameEl.textContent = data.user.name || 'N/A';
+                if (usernameEl) usernameEl.textContent = data.user.username || 'N/A';
+                if (emailEl) emailEl.textContent = data.user.email || 'N/A';
+                if (roleEl) roleEl.textContent = data.user.role || 'N/A';
+                if (createdEl) createdEl.textContent = data.user.created_at ? new Date(data.user.created_at).toLocaleDateString() : 'N/A';
+                if (lastLoginEl) lastLoginEl.textContent = data.user.last_login ? new Date(data.user.last_login).toLocaleString() : 'N/A';
+
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                alert('Failed to load profile data: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching profile:', error);
+            alert('Error loading profile data');
+        });
+}
+
+function closeViewProfileModal() {
+    const modal = document.getElementById('viewProfileModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+}

@@ -1,47 +1,96 @@
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
-    const errorContainer = document.getElementById('errorContainer');
-    
+    const studentLoginForm = document.getElementById('studentLoginForm');
+
     // Check if there's an error from PHP
     if (typeof window.loginError !== 'undefined' && window.loginError) {
-        showError(window.loginError);
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Error',
+            text: window.loginError,
+            confirmButtonText: 'OK'
+        });
     }
-    
-    // Handle form submission
-    loginForm.addEventListener('submit', function(e) {
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
-        
-        // Basic client-side validation
-        if (!username || !password) {
-            e.preventDefault();
-            showError('Please enter both username and password.');
-            return false;
-        }
-        
-        // Validate email format if using email as username
-        if (!isValidEmail(username)) {
-            e.preventDefault();
-            showError('Please enter a valid email address.');
-            return false;
-        }
-        
-        // Show loading state
-        const submitButton = this.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<span class="loading-spinner"></span> Logging in...';
-    });
-    
-    function showError(message) {
-        errorContainer.textContent = message;
-        errorContainer.style.display = 'block';
-        
-        // Hide error after 5 seconds
-        setTimeout(() => {
-            errorContainer.style.display = 'none';
-        }, 5000);
+
+    // Handle admin form submission
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // Basic client-side validation
+            if (!username || !password) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validation Error',
+                    text: 'Please enter both username and password.',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // Validate email format if using email as username
+            if (!isValidEmail(username)) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validation Error',
+                    text: 'Please enter a valid email address.',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // Show loading SweetAlert
+            Swal.fire({
+                title: 'Logging in...',
+                text: 'Please wait while we verify your credentials.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // The form will submit normally, PHP will handle the login
+        });
     }
-    
+
+    // Handle student form submission
+    if (studentLoginForm) {
+        studentLoginForm.addEventListener('submit', function(e) {
+            const studentId = document.getElementById('student_id').value.trim();
+
+            // Basic client-side validation
+            if (!studentId) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validation Error',
+                    text: 'Please enter your student ID.',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+
+            // Show loading SweetAlert
+            Swal.fire({
+                title: 'Logging in...',
+                text: 'Please wait while we verify your student ID.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // The form will submit normally, PHP will handle the login
+        });
+    }
+
     function isValidEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);

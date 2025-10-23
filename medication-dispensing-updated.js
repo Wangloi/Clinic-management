@@ -11,10 +11,11 @@ function loadMedications() {
                 data.forEach(med => {
                     const option = document.createElement('option');
                     option.value = med.medicine_id;
-                    option.textContent = `${med.medicine_name} (${med.stock_quantity} available)`;
-                    option.dataset.stock = med.stock_quantity;
+                    option.textContent = `${med.medicine_name} (${med.quantity} ${med.unit || ''} available)`;
+                    option.dataset.stock = med.quantity;
                     option.dataset.name = med.medicine_name;
                     option.dataset.description = med.description;
+                    option.dataset.unit = med.unit || '';
                     select.appendChild(option);
                 });
             }

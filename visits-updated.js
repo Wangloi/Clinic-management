@@ -87,7 +87,7 @@ function editVisit(visitId) {
             });
     } else {
         // Redirect to edit page if modal doesn't exist
-        window.location.href = `edit-visit.php?id=${visitId}`;
+        window.location.href = `../edit-visit.php?id=${visitId}`;
     }
 }
 
@@ -141,38 +141,48 @@ function submitEditForm() {
 }
 
 function deleteVisit(visitId) {
-    // Confirm deletion with user
-    if (confirm('Are you sure you want to delete this visit record? This action cannot be undone.')) {
-        console.log('Deleting visit:', visitId);
+    // Confirm deletion with user using SweetAlert
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You want to delete this visit record? This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log('Deleting visit:', visitId);
 
-        // Send delete request to server
-        fetch(`visit-actions.php?action=delete&id=${visitId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                // Show success message
-                modalManager.showSuccessMessage(data.message || 'Visit record deleted successfully!');
-                // Reload the page to reflect changes
-                setTimeout(() => location.reload(), 1000);
-            } else {
-                modalManager.showErrorMessage(data.message || 'Failed to delete visit');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            modalManager.showErrorMessage('Network error. Please try again.');
-        });
-    }
+            // Send delete request to server
+            fetch(`visit-actions.php?action=delete&id=${visitId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    modalManager.showSuccessMessage(data.message || 'Visit record deleted successfully!');
+                    // Reload the page to reflect changes
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    modalManager.showErrorMessage(data.message || 'Failed to delete visit');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                modalManager.showErrorMessage('Network error. Please try again.');
+            });
+        }
+    });
 }
 
 function viewVisitDetails(visitId) {
@@ -215,7 +225,7 @@ function viewVisitDetails(visitId) {
             });
     } else {
         // Redirect to details page if modal doesn't exist
-        window.location.href = `visit-details.php?id=${visitId}`;
+        window.location.href = `../visit-details.php?id=${visitId}`;
     }
 }
 
@@ -305,7 +315,7 @@ function exportVisits(format) {
     };
 
     // Redirect to export endpoint
-    window.location.href = `export-visits.php?format=${format}&${new URLSearchParams(filters).toString()}`;
+    window.location.href = `../export-visits.php?format=${format}&${new URLSearchParams(filters).toString()}`;
 }
 
 // Form validation for visit forms
@@ -401,28 +411,38 @@ function performBulkAction(action) {
 
     switch(action) {
         case 'bulk-delete':
-            if (confirm(`Are you sure you want to delete ${visitIds.length} visit(s)?`)) {
-                fetch('bulk-delete-visits.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ visit_ids: visitIds })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(`${data.deleted_count} visit(s) deleted successfully!`);
-                        location.reload();
-                    } else {
-                        alert('Error deleting visits: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting visits. Please try again.');
-                });
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You want to delete ${visitIds.length} visit(s)? This action cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete them!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('../bulk-delete-visits.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ visit_ids: visitIds })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('Deleted!', `${data.deleted_count} visit(s) deleted successfully!`, 'success');
+                            location.reload();
+                        } else {
+                            Swal.fire('Error!', 'Error deleting visits: ' + data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire('Error!', 'Error deleting visits. Please try again.', 'error');
+                    });
+                }
+            });
             break;
 
         case 'bulk-export':
@@ -431,7 +451,7 @@ function performBulkAction(action) {
                 search: new URLSearchParams(window.location.search).get('search') || '',
                 patient_type: new URLSearchParams(window.location.search).get('patient_type') || ''
             };
-            window.location.href = `export-visits.php?format=csv&${new URLSearchParams(filters).toString()}`;
+            window.location.href = `../export-visits.php?format=csv&${new URLSearchParams(filters).toString()}`;
             break;
     }
 }

@@ -1,0 +1,47 @@
+/* Student Alert Styles */
+.swal2-popup.student-alert {
+    border-radius: 15px;
+    font-family: "Onest", sans-serif;
+}
+
+.swal2-title.student-alert-title {
+    color: #28a745;
+    font-weight: 700;
+}
+
+.swal2-html-container.student-alert-content {
+    font-family: "Onest", sans-serif;
+}
+
+.swal2-confirm.student-alert-button {
+    background-color: #28a745 !important;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 12px 24px;
+}
+
+.swal2-confirm.student-alert-button:hover {
+    background-color: #218838 !important;
+}
+
+/* Custom styles for login success */
+.login-success-emoji {
+    animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 20%, 60%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    80% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Progress bar styling */
+.swal2-timer-progress-bar {
+    background: #28a745 !important;
+}

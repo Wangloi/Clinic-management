@@ -46,10 +46,66 @@ function openEditModal(medicine) {
     modalManager.openModal('editMedicineModal');
 }
 
-function openDeleteModal(medicineId, medicineName) {
-    document.getElementById('delete_medicine_name').textContent = medicineName;
-    document.getElementById('deleteMedicineModal').dataset.medicineId = medicineId;
-    modalManager.openModal('deleteMedicineModal');
+function deleteMedicine(medicineId, medicineName) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to delete "${medicineName}". This action cannot be undone!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: 'Deleting...',
+                text: 'Please wait while we delete the medicine.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch('delete-medicine.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `id=${medicineId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: data.message || 'Medicine deleted successfully.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message || 'Failed to delete medicine.',
+                        icon: 'error'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Network error. Please try again.',
+                    icon: 'error'
+                });
+            });
+        }
+    });
 }
 
 function viewMedicineDetails(medicineId) {
@@ -91,41 +147,7 @@ function submitEditMedicineForm() {
     });
 }
 
-function confirmDeleteMedicine() {
-    const medicineId = document.getElementById('deleteMedicineModal').dataset.medicineId;
 
-    // Show loading state
-    const deleteBtn = document.querySelector('#deleteMedicineModal button[type="button"]:not(.text-gray-600)');
-    const originalText = deleteBtn.textContent;
-    deleteBtn.disabled = true;
-    deleteBtn.innerHTML = '<span class="loading-spinner"></span> Deleting...';
-
-    fetch('delete-medicine.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `id=${medicineId}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            modalManager.showSuccessMessage(data.message || 'Medicine deleted successfully');
-            closeModal('deleteMedicineModal');
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            modalManager.showErrorMessage(data.message || 'Failed to delete medicine');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        modalManager.showErrorMessage('Network error. Please try again.');
-    })
-    .finally(() => {
-        deleteBtn.disabled = false;
-        deleteBtn.textContent = originalText;
-    });
-}
 
 // Initialize modal event listeners
 document.addEventListener('DOMContentLoaded', function() {

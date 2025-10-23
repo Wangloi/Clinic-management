@@ -1,0 +1,251 @@
+/* Import system fonts */
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps:wght@400;700&family=Onest:wght@100..900&display=swap');
+
+/* Apply system font to all elements */
+* {
+    font-family: "Onest", sans-serif;
+}
+
+/* Hero section background */
+.hero-section {
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent;
+}
+
+/* Ensure proper text visibility over background */
+.hero-section h1,
+.hero-section p {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+}
+
+/* Fix feature card hover effects */
+.feature-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+}
+
+/* Header navigation hover effects */
+header nav a:hover {
+    background-color: #e9ecef !important;
+    color: #007bff !important;
+}
+
+/* Active navigation link */
+header nav a.active {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+/* Logo sizing */
+.SRCB-logo img,
+.clinic-logo img {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+}
+
+/* Typography weights */
+.hero-section h1 {
+    font-weight: 700;
+}
+
+.hero-section p {
+    font-weight: 500;
+}
+
+.feature-card h3 {
+    font-weight: 600;
+}
+
+.feature-card p {
+    font-weight: 400;
+}
+
+.feature-card button {
+    font-weight: 600;
+}
+
+.content-section h2 {
+    font-weight: 700;
+}
+
+.content-section h3 {
+    font-weight: 600;
+}
+
+.content-section p {
+    font-weight: 400;
+}
+
+/* Full-page background image with subtle overlay for readability */
+html, body { 
+    height: 100%; 
+}
+
+body {
+    background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('../images/SRCBBG.png') no-repeat center center fixed !important;
+    background-size: cover !important;
+    background-color: transparent !important;
+}
+
+/* Keep sections transparent so the background shows through consistently like Home */
+#goals, #about { 
+    background-color: transparent; 
+}
+
+/* Ensure proper card centering */
+.feature-cards {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.feature-card {
+    margin: 0 auto !important;
+}
+
+/* Responsive Modal Styles using Tailwind-compatible approach */
+.responsive-modal .swal2-popup {
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+}
+
+/* Mobile Responsive Enhancements */
+@media (max-width: 768px) {
+    .responsive-modal .swal2-popup {
+        width: 95vw !important;
+        margin: 0.5rem !important;
+    }
+    
+    .responsive-modal .swal2-actions {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    .responsive-modal .swal2-confirm,
+    .responsive-modal .swal2-cancel {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    /* Mobile Navigation */
+    .mobile-nav {
+        display: block !important;
+    }
+    
+    .desktop-nav {
+        display: none !important;
+    }
+    
+    /* Mobile Header */
+    header .max-w-6xl {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Mobile Hero Text */
+    .hero-section h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .hero-section p {
+        font-size: 1.125rem !important;
+    }
+    
+    /* Mobile Feature Cards */
+    .feature-cards {
+        gap: 1rem !important;
+        padding: 0 1rem !important;
+    }
+    
+    .feature-card {
+        min-width: auto !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+}
+
+/* Tablet and Desktop Responsive */
+@media (min-width: 769px) {
+    .feature-cards {
+        gap: 2rem !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    .feature-card {
+        flex: none !important;
+        width: auto !important;
+        min-width: 350px !important;
+        max-width: 400px !important;
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1025px) {
+    .feature-card {
+        width: 400px !important;
+    }
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.footer h3,
+.footer h4 {
+    color: #333;
+}
+
+.footer p {
+    color: #6c757d;
+}
+
+.footer a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #007bff !important;
+}
+
+.back-to-top {
+    transition: all 0.3s ease;
+}
+
+.back-to-top:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.copyright {
+    background-color: #007bff;
+}
+
+/* Footer responsive */
+@media (max-width: 768px) {
+    .footer {
+        padding: 2rem 1rem;
+    }
+    
+    .footer .grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-brand {
+        text-align: center;
+    }
+    
+    .footer-links,
+    .footer-legal {
+        text-align: center;
+    }
+}

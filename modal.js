@@ -57,7 +57,8 @@ class ModalManager {
         document.addEventListener('submit', (e) => {
             const form = e.target;
             if (form.closest('.modal') || form.closest('.modal-tailwind') || form.closest('#addVisitModal') ||
-                form.closest('#addMedicineModal') || form.closest('#editMedicineModal') || form.closest('#deleteMedicineModal')) {
+                form.closest('#addMedicineModal') || form.closest('#editMedicineModal') || form.closest('#deleteMedicineModal') ||
+                form.closest('#addAccountModal')) {
                 e.preventDefault();
                 this.handleFormSubmit(form);
             }
@@ -229,33 +230,20 @@ class ModalManager {
     }
 
     showMessage(message, type) {
-        // Remove existing messages
-        const existingMessages = document.querySelectorAll('.modal-message');
-        existingMessages.forEach(msg => msg.remove());
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `modal-message ${type}-message`;
-        messageDiv.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            color: white;
-            z-index: 1001;
-            animation: slideInRight 0.3s ease-out;
-            ${type === 'success' ? 'background-color: #4CAF50;' : 'background-color: #f44336;'}
-        `;
-        
-        messageDiv.textContent = message;
-        document.body.appendChild(messageDiv);
-
-        // Auto-remove after 5 seconds
-        setTimeout(() => {
-            if (messageDiv.parentNode) {
-                messageDiv.remove();
+        const icon = type === 'success' ? 'success' : 'error';
+        Swal.fire({
+            icon: icon,
+            title: message,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
             }
-        }, 5000);
+        });
     }
 
     // Utility function to populate form data
@@ -317,35 +305,30 @@ function closeCurrentModal() {
     return modalManager.closeCurrentModal();
 }
 
-// Add CSS for loading spinner
-const style = document.createElement('style');
-style.textContent = `
-    .loading-spinner {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        border: 2px solid rgba(255,255,255,0.3);
-        border-radius: 50%;
-        border-top-color: #fff;
-        animation: spin 1s ease-in-out infinite;
-        margin-right: 8px;
-    }
-    
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-    
-    @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    
-    .modal-loading {
-        opacity: 0.7;
-        pointer-events: none;
-    }
-`;
-document.head.appendChild(style);
+    // Add CSS for loading spinner
+    const style = document.createElement('style');
+    style.textContent = `
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .modal-loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    `;
+    document.head.appendChild(style);
 
 // Export for module usage if needed
 if (typeof module !== 'undefined' && module.exports) {

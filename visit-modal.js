@@ -43,6 +43,23 @@ async function viewVisitDetails(visitId) {
                     element.textContent = data[field] || 'N/A';
                 }
             });
+
+            // Populate dispensed medications
+            const dispensedList = document.getElementById('view-dispensed-medications');
+            if (dispensedList) {
+                dispensedList.innerHTML = '';
+                if (data.dispensed_medications && data.dispensed_medications.length > 0) {
+                    data.dispensed_medications.forEach(med => {
+                        const li = document.createElement('li');
+                        li.textContent = `${med.medicine_name} - Quantity: ${med.quantity_dispensed}`;
+                        dispensedList.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = 'No medications dispensed';
+                    dispensedList.appendChild(li);
+                }
+            }
             
             modalManager.openModal('viewVisitModal');
         } else {
